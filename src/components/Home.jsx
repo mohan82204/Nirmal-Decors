@@ -187,19 +187,9 @@ const Home = ({ onBookClick }) => {
       <motion.div
         style={{ opacity: heroOpacity, y: heroY, position: 'relative', zIndex: 5, width: '100%' }}
       >
-        <div
-          style={{
-            maxWidth: '1300px',
-            margin: '0 auto',
-            padding: '100px 6% 80px',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '60px',
-            alignItems: 'center',
-          }}
-        >
+        <div className="max-w-[1300px] mx-auto px-[6%] pt-[100px] pb-[80px] grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-[60px] items-center">
           {/* LEFT — Text */}
-          <motion.div variants={stagger} initial="hidden" animate={controls}>
+          <motion.div variants={stagger} initial="hidden" animate={controls} className="order-2 lg:order-1 pt-8 lg:pt-0">
             {/* Eyebrow */}
             <motion.div
               variants={fadeUp}
