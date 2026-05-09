@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import { motion, useAnimation, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 
 const EASE = [0.76, 0, 0.24, 1];
-const SPRING = { type: 'spring', stiffness: 260, damping: 22 };
 import { FlowerFall } from './ui/flower-fall';
 
 const WORDS = ['ELEGANCE', 'TIMELESS', 'BEAUTY'];
@@ -70,10 +69,38 @@ const StatPill = ({ value, label, delay }) => {
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.7, ease: EASE, delay }}
-      className="p-8 rounded-xl bg-white/40 backdrop-blur-sm border border-white/20 text-center"
+      style={{
+        textAlign: 'center',
+        padding: '20px 28px',
+        background: 'rgba(255,255,255,0.65)',
+        backdropFilter: 'blur(12px)',
+        border: '0.5px solid rgba(212,175,55,0.3)',
+        borderRadius: '2px',
+      }}
     >
-      <h3 className="font-serif text-4xl text-[#1a1a1a] mb-1">{value}</h3>
-      <p className="text-[10px] uppercase tracking-[2px] text-[#b45309] font-semibold">{label}</p>
+      <div
+        style={{
+          fontFamily: "'Cormorant Garamond', serif",
+          fontSize: '2.2rem',
+          fontWeight: 600,
+          color: '#c8922a',
+          lineHeight: 1,
+        }}
+      >
+        {value}
+      </div>
+      <div
+        style={{
+          fontFamily: "'Inter', sans-serif",
+          fontSize: '11px',
+          letterSpacing: '2px',
+          textTransform: 'uppercase',
+          color: '#666',
+          marginTop: '6px',
+        }}
+      >
+        {label}
+      </div>
     </motion.div>
   );
 };
@@ -98,6 +125,10 @@ const Home = ({ onBookClick }) => {
     hidden: { y: 50, opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 1, ease: EASE } },
   };
+  const slideIn = {
+    hidden: { x: -40, opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 1, ease: EASE } },
+  };
 
   return (
     <section
@@ -106,13 +137,18 @@ const Home = ({ onBookClick }) => {
       style={{
         position: 'relative',
         width: '100%',
-        minHeight: '100vh',
+        minHeight: '100dvh',
         overflow: 'hidden',
+        /* Bright warm gradient background */
         background: 'linear-gradient(135deg, #fff7ed 0%, #fef3c7 30%, #fde68a 60%, #fef9c3 100%)',
         display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
         alignItems: 'center',
       }}
     >
+      {/* ── Background layers ── */}
+      {/* Left soft rose wash */}
       <div
         style={{
           position: 'absolute',
@@ -124,9 +160,13 @@ const Home = ({ onBookClick }) => {
         }}
       />
 
+      {/* Diagonal accent */}
       <DiagonalBand />
+
+      {/* Falling Flowers */}
       <FlowerFall count={15} />
 
+      {/* Gold top shimmer bar */}
       <motion.div
         initial={{ scaleX: 0 }}
         animate={{ scaleX: 1 }}
@@ -143,17 +183,24 @@ const Home = ({ onBookClick }) => {
         }}
       />
 
+      {/* ── Main content ── */}
       <motion.div
         style={{ opacity: heroOpacity, y: heroY, position: 'relative', zIndex: 5, width: '100%' }}
       >
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:gap-20 relative z-10 max-w-[1300px] mx-auto px-[6%] py-[100px]">
-          
-          <motion.div 
-            variants={stagger} 
-            initial="hidden" 
-            animate={controls}
-            className="w-full lg:w-[55%] text-center lg:text-left"
-          >
+        <div
+          style={{
+            maxWidth: '1300px',
+            margin: '0 auto',
+            padding: '100px 6% 80px',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '60px',
+            alignItems: 'center',
+          }}
+        >
+          {/* LEFT — Text */}
+          <motion.div variants={stagger} initial="hidden" animate={controls}>
+            {/* Eyebrow */}
             <motion.div
               variants={fadeUp}
               style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '28px' }}
@@ -173,12 +220,17 @@ const Home = ({ onBookClick }) => {
               </span>
             </motion.div>
 
+            {/* Headline */}
             <motion.div variants={fadeUp} style={{ marginBottom: '12px' }}>
-              <h1 
-                className="font-serif leading-[1.1] text-gray-900 mb-6"
+              <h1
                 style={{
-                  fontSize: 'clamp(3rem, 10vw, 6rem)',
+                  fontFamily: "'Cormorant Garamond', serif",
+                  fontSize: 'clamp(3rem, 5.5vw, 5.5rem)',
                   fontWeight: 300,
+                  color: '#1a1208',
+                  lineHeight: 1.1,
+                  margin: 0,
+                  letterSpacing: '-1px',
                 }}
               >
                 <span
@@ -197,6 +249,7 @@ const Home = ({ onBookClick }) => {
               </h1>
             </motion.div>
 
+            {/* Divider */}
             <motion.div
               variants={{
                 hidden: { scaleX: 0 },
@@ -206,11 +259,12 @@ const Home = ({ onBookClick }) => {
                 width: '80px',
                 height: '1px',
                 background: 'linear-gradient(90deg, #d4af37, #fbbf24)',
-                margin: '28px auto 28px 0',
+                margin: '28px 0',
                 transformOrigin: 'left',
               }}
             />
 
+            {/* Body */}
             <motion.p
               variants={fadeUp}
               style={{
@@ -220,16 +274,17 @@ const Home = ({ onBookClick }) => {
                 color: '#5c4a1e',
                 lineHeight: 1.85,
                 maxWidth: '460px',
-                margin: '0 auto 48px 0',
+                margin: '0 0 48px',
               }}
             >
               We craft bespoke wedding experiences — from grand mandap structures to intimate floral
               canopies — transforming your vision into a timeless work of art.
             </motion.p>
 
+            {/* CTAs */}
             <motion.div
               variants={fadeUp}
-              style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', justifyContent: 'center', lg: 'justify-start' }}
+              style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}
             >
               <motion.a
                 href="#gallery"
@@ -255,49 +310,28 @@ const Home = ({ onBookClick }) => {
                 onClick={onBookClick}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="text-[#b45309] border-[1.5px] border-[#d4af37] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(212,175,55,0.4)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] cursor-pointer"
-                style={{
-                  padding: '18px 44px',
-                  background: 'transparent',
-                  fontFamily: "'Inter', sans-serif",
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  letterSpacing: '3px',
-                  textTransform: 'uppercase',
-                  borderRadius: '1px',
-                }}
+                className="min-w-[160px] sm:min-w-[200px] text-[#b45309] border-[1.5px] border-[#d4af37] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(212,175,55,0.4)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] cursor-pointer px-8 sm:px-11 py-4 sm:py-[18px] font-sans text-[11px] sm:text-[12px] font-bold tracking-[3px] uppercase rounded-[1px] text-center"
               >
                 Book Now
               </motion.button>
             </motion.div>
           </motion.div>
 
+          {/* RIGHT — Image collage */}
           <motion.div
             initial={{ opacity: 0, x: 60 }}
-            animate={{ 
-              opacity: 1, 
-              x: 0,
-            }}
+            animate={{ opacity: 1, x: 0, y: [0, -15, 0] }}
             transition={{ 
               opacity: { duration: 1.2, ease: EASE, delay: 0.5 },
               x: { duration: 1.2, ease: EASE, delay: 0.5 },
+              y: { duration: 5, repeat: Infinity, ease: 'easeInOut' }
             }}
-            className="w-full lg:w-[40%] relative h-[400px] lg:h-[500px]"
+            className="relative h-[400px] sm:h-[500px] lg:h-[560px] order-1 lg:order-2"
           >
+            {/* Main image */}
             <motion.div
               whileHover={{ scale: 1.02 }}
-              transition={SPRING}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                borderRadius: '2px',
-                overflow: 'hidden',
-                boxShadow: '0 30px 60px rgba(180,130,20,0.2)',
-                border: '0.5px solid rgba(212,175,55,0.5)',
-              }}
+              className="absolute top-0 left-[10%] lg:left-[5%] right-0 h-[80%] lg:h-[78%] rounded-[2px] overflow-hidden shadow-[0_30px_60px_rgba(180,130,20,0.2)]"
             >
               <motion.img
                 src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=900&auto=format&fit=crop"
@@ -305,89 +339,79 @@ const Home = ({ onBookClick }) => {
                 initial={{ scale: 1.1 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 1.6, ease: EASE, delay: 0.6 }}
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                className="w-full h-full object-cover"
               />
+              <div className="absolute inset-0 border-[0.5px] border-[#d4af37]/50 rounded-[2px] pointer-events-none" />
             </motion.div>
 
             {/* Floating small image */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
-              animate={{ 
-                opacity: 1, 
-                y: [0, 10, 0],
-              }}
+              animate={{ opacity: 1, y: [0, 10, 0] }}
               transition={{ 
                 opacity: { duration: 1, ease: EASE, delay: 1 },
                 y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }
               }}
               whileHover={{ y: -6 }}
-              className="absolute -bottom-10 -left-6 lg:-bottom-20 lg:-left-20 w-[45%] aspect-[4/5] rounded-sm overflow-hidden shadow-2xl border-2 lg:border-4 border-white z-20"
+              className="absolute bottom-0 left-0 w-[45%] lg:w-[42%] h-[45%] lg:h-[42%] rounded-[2px] overflow-hidden shadow-2xl border-[3px] border-white"
             >
               <img
                 src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&auto=format&fit=crop"
                 alt="Golden reception"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                className="w-full h-full object-cover"
               />
             </motion.div>
 
             {/* Floating badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ 
-                opacity: 1, 
-                scale: [1, 1.08, 1],
-              }}
+              animate={{ opacity: 1, scale: [1, 1.08, 1] }}
               transition={{ 
                 opacity: { duration: 0.8, ease: EASE, delay: 1.3 },
                 scale: { duration: 3, repeat: Infinity, ease: 'easeInOut' }
               }}
               whileHover={{ rotate: 10 }}
-              className="absolute -top-10 -left-10 lg:-top-16 lg:-left-16 size-24 lg:size-32 rounded-full bg-gradient-to-br from-[#d4af37] to-[#fbbf24] flex flex-col items-center justify-center text-white shadow-xl z-30 border-4 border-white/30 backdrop-blur-md"
+              className="absolute top-[10%] left-0 lg:left-[-6%] w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#d4af37] to-[#fbbf24] flex flex-col items-center justify-center shadow-[0_12px_30px_rgba(212,175,55,0.4)]"
             >
-              <span className="font-serif text-2xl lg:text-3xl font-bold leading-none">10+</span>
-              <span className="text-[8px] lg:text-[10px] tracking-widest uppercase mt-1 opacity-90">Yrs Exp</span>
+              <span className="font-serif text-2xl sm:text-[1.8rem] font-semibold text-white leading-none">10+</span>
+              <span className="font-sans text-[8px] sm:text-[9px] tracking-widest text-white/90 uppercase mt-0.5">Yrs Exp</span>
             </motion.div>
           </motion.div>
         </div>
 
-        {/* Stats Strip */}
-        <div className="w-full max-w-7xl mx-auto px-[5%] pb-20 relative z-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <StatPill value="500+" label="Weddings Styled" delay={1.2} />
-            <StatPill value="98%" label="Client Satisfaction" delay={1.35} />
-            <StatPill value="50+" label="Design Collections" delay={1.5} />
-            <StatPill value="10+" label="Years of Excellence" delay={1.65} />
-          </div>
-        </div>
+        {/* Stats row */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: EASE, delay: 1.1 }}
+          className="max-w-[1300px] mx-auto px-[6%] pb-20 flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-5"
+        >
+          <StatPill value="500+" label="Weddings Styled" delay={1.2} />
+          <StatPill value="98%" label="Client Satisfaction" delay={1.35} />
+          <StatPill value="50+" label="Design Collections" delay={1.5} />
+          <StatPill value="10+" label="Years of Excellence" delay={1.65} />
+        </motion.div>
       </motion.div>
 
       {/* Corner accents */}
       {[
-        { top: 28, left: 28, clip: 'polygon(0 0, 100% 0, 100% 2%, 2% 2%, 2% 100%, 0 100%)' },
-        { top: 28, right: 28, clip: 'polygon(0 0, 100% 0, 100% 100%, 98% 100%, 98% 2%, 0 2%)' },
-        { bottom: 28, left: 28, clip: 'polygon(0 0, 2% 0, 2% 98%, 100% 98%, 100% 100%, 0 100%)' },
-        { bottom: 28, right: 28, clip: 'polygon(98% 0, 100% 0, 100% 100%, 0 100%, 0 98%, 98% 98%)' },
+        { top: '1.75rem', left: '1.75rem', clip: 'polygon(0 0, 100% 0, 100% 2%, 2% 2%, 2% 100%, 0 100%)' },
+        { top: '1.75rem', right: '1.75rem', clip: 'polygon(0 0, 100% 0, 100% 100%, 98% 100%, 98% 2%, 0 2%)' },
+        { bottom: '1.75rem', left: '1.75rem', clip: 'polygon(0 0, 2% 0, 2% 98%, 100% 98%, 100% 100%, 0 100%)' },
+        { bottom: '1.75rem', right: '1.75rem', clip: 'polygon(98% 0, 100% 0, 100% 100%, 0 100%, 0 98%, 98% 98%)' },
       ].map((pos, i) => (
         <motion.div
           key={i}
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 0.6, scale: 1 }}
           transition={{ delay: 1.8, duration: 0.8 }}
+          className="absolute w-10 h-10 border border-[#d4af37] z-10 pointer-events-none"
           style={{
-            position: 'absolute',
-            width: '40px',
-            height: '40px',
-            border: '1px solid #d4af37',
-            zIndex: 10,
             clipPath: pos.clip,
-            top: pos.top,
-            bottom: pos.bottom,
-            left: pos.left,
-            right: pos.right,
+            ...pos
           }}
         />
       ))}
-
     </section>
   );
 };

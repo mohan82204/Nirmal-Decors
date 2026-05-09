@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { CardStack } from '@/components/ui/card-stack';
 
@@ -64,38 +64,23 @@ const SectionHeading = () => {
   const inView = useInView(ref, { once: true, margin: '-80px' });
 
   return (
-    <div ref={ref} style={{ textAlign: 'center', marginBottom: '64px' }}>
+    <div ref={ref} className="text-center mb-16">
       <motion.span
         initial={{ opacity: 0, letterSpacing: '14px' }}
         animate={inView ? { opacity: 1, letterSpacing: '5px' } : {}}
         transition={{ duration: 1.2, ease: EASE }}
-        style={{
-          display: 'block',
-          color: '#d4af37',
-          letterSpacing: '5px',
-          textTransform: 'uppercase',
-          fontSize: '11px',
-          fontFamily: "'Inter', sans-serif",
-          fontWeight: 500,
-          marginBottom: '18px',
-        }}
+        className="block uppercase text-[10px] sm:text-[11px] tracking-[5px] font-sans font-medium mb-4"
+        style={{ color: '#d4af37' }}
       >
         Curated Experiences
       </motion.span>
 
-      <div style={{ overflow: 'hidden' }}>
+      <div className="overflow-hidden">
         <motion.h2
           initial={{ y: '110%' }}
           animate={inView ? { y: '0%' } : {}}
           transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-          style={{
-            fontFamily: "'Cormorant Garamond', serif",
-            fontSize: 'clamp(2.5rem, 5vw, 4rem)',
-            fontWeight: 300,
-            color: '#fff',
-            margin: 0,
-            letterSpacing: '-0.5px',
-          }}
+          className="font-serif text-[clamp(2.2rem,6vw,4rem)] font-light m-0 tracking-[-0.5px] text-white"
         >
           Our Signature Series
         </motion.h2>
@@ -105,27 +90,14 @@ const SectionHeading = () => {
         initial={{ scaleX: 0 }}
         animate={inView ? { scaleX: 1 } : {}}
         transition={{ duration: 1.1, ease: EASE, delay: 0.35 }}
-        style={{
-          width: '60px',
-          height: '1px',
-          background: 'linear-gradient(90deg, #d4af37, #fbbf24)',
-          margin: '24px auto 0',
-          transformOrigin: 'left',
-        }}
+        className="w-[60px] h-[1px] bg-gradient-to-r from-[#d4af37] to-[#fbbf24] mx-auto mt-6 origin-left"
       />
 
       <motion.p
         initial={{ opacity: 0 }}
         animate={inView ? { opacity: 1 } : {}}
         transition={{ duration: 0.8, ease: EASE, delay: 0.55 }}
-        style={{
-          fontFamily: "'Inter', sans-serif",
-          fontSize: '15px',
-          color: 'rgba(255, 255, 255, 0.7)',
-          fontWeight: 300,
-          marginTop: '16px',
-          lineHeight: 1.7,
-        }}
+        className="font-sans text-sm sm:text-[15px] text-white/70 font-light mt-4 leading-relaxed"
       >
         Click a card or drag to browse — use arrow keys for accessibility
       </motion.p>
@@ -137,66 +109,54 @@ const SectionHeading = () => {
 const Series = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth < 640 ? 300 : 500,
+    height: window.innerWidth < 640 ? 220 : 340,
+    spread: window.innerWidth < 640 ? 20 : 44
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth < 640 ? 300 : 500,
+        height: window.innerWidth < 640 ? 220 : 340,
+        spread: window.innerWidth < 640 ? 20 : 44
+      });
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <section
       id="series"
+      className="relative min-h-[100dvh] flex flex-col justify-center pt-24 pb-16 md:pt-32 md:pb-24 overflow-hidden bg-cover bg-center bg-no-repeat bg-fixed"
       style={{
-        position: 'relative',
-        backgroundImage:
-          'linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&auto=format&fit=crop&q=60")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        color: '#cbd5e1',
-        padding: '120px 0 80px',
-        overflow: 'hidden',
+        backgroundImage: 'linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.8)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&auto=format&fit=crop&q=60")',
       }}
     >
       {/* Animated gold gradient overlay */}
       <motion.div
         animate={{ opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.15) 0%, transparent 65%)',
-          pointerEvents: 'none',
-        }}
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.15) 0%, transparent 65%)' }}
       />
       {/* Decorative amber blobs */}
       <motion.div
         animate={{ x: [0, 28, 0], y: [0, -18, 0] }}
         transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute',
-          top: '-8%',
-          right: '-4%',
-          width: '480px',
-          height: '480px',
-          background:
-            'radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}
+        className="absolute top-[-8%] right-[-4%] w-[300px] sm:w-[480px] h-[300px] sm:h-[480px] pointer-events-none opacity-40 sm:opacity-100"
+        style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%)' }}
       />
       <motion.div
         animate={{ x: [0, -18, 0], y: [0, 24, 0] }}
         transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute',
-          bottom: '-10%',
-          left: '-4%',
-          width: '550px',
-          height: '550px',
-          background:
-            'radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }}
+        className="absolute bottom-[-10%] left-[-4%] w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] pointer-events-none opacity-40 sm:opacity-100"
+        style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.06) 0%, transparent 70%)' }}
       />
 
-      <div
-        style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 5%', position: 'relative', zIndex: 1 }}
-      >
+      <div className="container max-w-[1200px] mx-auto px-6 relative z-[1]">
         <SectionHeading />
 
         {/* Card Stack */}
@@ -205,6 +165,7 @@ const Series = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 1, ease: EASE, delay: 0.2 }}
+          className="flex justify-center"
         >
           <CardStack
             items={seriesCards}
@@ -213,10 +174,10 @@ const Series = () => {
             intervalMs={2000}
             pauseOnHover
             showDots
-            cardWidth={500}
-            cardHeight={340}
+            cardWidth={dimensions.width}
+            cardHeight={dimensions.height}
             overlap={0.42}
-            spreadDeg={44}
+            spreadDeg={dimensions.spread}
             maxVisible={5}
             loop
             perspectivePx={1200}
@@ -234,29 +195,13 @@ const Series = () => {
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 1, ease: EASE, delay: 1 }}
-          style={{
-            textAlign: 'center',
-            marginTop: '48px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '16px',
-          }}
+          className="mt-12 md:mt-16 text-center flex items-center justify-center gap-4"
         >
-          <div style={{ width: '36px', height: '0.5px', background: '#d4af37' }} />
-          <span
-            style={{
-              fontFamily: "'Inter', sans-serif",
-              fontSize: '11px',
-              letterSpacing: '4px',
-              textTransform: 'uppercase',
-              color: '#d4af37',
-              fontWeight: 500,
-            }}
-          >
+          <div className="w-6 sm:w-9 h-[0.5px] bg-[#d4af37]" />
+          <span className="font-sans text-[9px] sm:text-[11px] tracking-[4px] uppercase text-[#d4af37] font-medium">
             5 Signature Collections Available
           </span>
-          <div style={{ width: '36px', height: '0.5px', background: '#d4af37' }} />
+          <div className="w-6 sm:w-9 h-[0.5px] bg-[#d4af37]" />
         </motion.div>
       </div>
     </section>

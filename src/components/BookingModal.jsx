@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import BasicDatePicker from './ui/calendar-1';
 import { parseDate } from '@ark-ui/react/date-picker';
+import { cn } from '@/lib/utils';
 
 const EASE = [0.76, 0, 0.24, 1];
 const SPRING = { type: 'spring', stiffness: 260, damping: 22 };
@@ -57,15 +58,7 @@ export const BookingModal = ({ isOpen, onClose }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4, ease: EASE }}
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 1000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '20px',
-          }}
+          className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6"
         >
           {/* Backdrop */}
           <motion.div
@@ -74,12 +67,7 @@ export const BookingModal = ({ isOpen, onClose }) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
             onClick={onClose}
-            style={{
-              position: 'absolute',
-              inset: 0,
-              background: 'rgba(5,5,5,0.85)',
-              backdropFilter: 'blur(12px)',
-            }}
+            className="absolute inset-0 bg-black/85 backdrop-blur-xl"
           />
 
           {/* Modal Card */}
@@ -88,82 +76,39 @@ export const BookingModal = ({ isOpen, onClose }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.8, ease: EASE }}
-            className="relative bg-[#fdfcfb] w-full max-w-[560px] p-6 sm:p-10 rounded-sm shadow-2xl z-[1001] border border-[#d4af371a] overflow-hidden"
+            className="relative bg-[#fdfcfb] w-full max-w-[560px] p-8 sm:p-10 rounded-sm shadow-2xl z-[1001] border border-[#d4af37]/10 overflow-hidden"
           >
-            {/* Spotlight Gradient (Light) */}
-            <div 
-              style={{
-                position: 'absolute',
-                top: '-20%',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '140%',
-                height: '100%',
-                background: 'radial-gradient(ellipse at center, rgba(212,175,55,0.05) 0%, transparent 70%)',
-                pointerEvents: 'none',
-                zIndex: 0
-              }}
-            />
+            {/* Spotlight Gradient */}
+            <div className="absolute top-[-20%] left-1/2 -translate-x-1/2 w-[140%] h-full bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.05)_0%,transparent_70%)] pointer-events-none z-0" />
+            
             {/* Gold accent bar */}
             <motion.div
               initial={{ scaleX: 0 }}
               animate={{ scaleX: 1 }}
               transition={{ duration: 0.8, ease: EASE, delay: 0.2 }}
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                height: '2px',
-                background: 'linear-gradient(90deg, transparent, #d4af37, transparent)',
-                transformOrigin: 'left',
-              }}
+              className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent origin-left z-10"
             />
 
-            {/* Close */}
+            {/* Close Button */}
             <motion.button
               onClick={onClose}
               whileHover={{ scale: 1.1, rotate: 90, backgroundColor: 'rgba(212,175,55,0.1)' }}
               whileTap={{ scale: 0.9 }}
               transition={SPRING}
-              style={{
-                position: 'absolute',
-                top: '24px',
-                right: '24px',
-                background: 'transparent',
-                border: '1px solid rgba(212,175,55,0.1)',
-                borderRadius: '50%',
-                width: '40px',
-                height: '40px',
-                fontSize: '20px',
-                cursor: 'pointer',
-                color: '#d4af37',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                zIndex: 10
-              }}
+              className="absolute top-4 right-4 sm:top-6 sm:right-6 bg-transparent border border-[#d4af37]/10 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer text-[#d4af37] z-20 text-xl"
             >
               ×
             </motion.button>
 
             {/* Heading */}
-            <div style={{ overflow: 'hidden', marginBottom: '4px', position: 'relative', zIndex: 1 }}>
+            <div className="relative z-10 overflow-hidden mb-1 text-center">
               <motion.h2
                 initial={{ y: '110%' }}
                 animate={{ y: '0%' }}
                 transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
-                style={{
-                  fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: 'clamp(1.8rem, 5vw, 2.4rem)',
-                  color: '#1a1a1a',
-                  margin: 0,
-                  textAlign: 'center',
-                  fontWeight: 400,
-                  letterSpacing: '1px'
-                }}
+                className="font-serif text-[1.8rem] sm:text-[2.4rem] text-[#1a1a1a] m-0 font-normal tracking-[1px]"
               >
-                Book Your <span style={{ color: '#d4af37' }}>Day</span>
+                Book Your <span className="text-[#d4af37]">Day</span>
               </motion.h2>
             </div>
 
@@ -171,34 +116,23 @@ export const BookingModal = ({ isOpen, onClose }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.6 }}
               transition={{ duration: 0.6, ease: EASE, delay: 0.3 }}
-              style={{
-                textAlign: 'center',
-                color: '#1a1a1a',
-                marginBottom: '32px',
-                fontSize: '12px',
-                fontFamily: "'Inter', sans-serif",
-                fontWeight: 400,
-                letterSpacing: '0.5px',
-                margin: '4px 0 32px',
-                position: 'relative',
-                zIndex: 1
-              }}
+              className="relative z-10 text-center text-[#1a1a1a] text-[11px] sm:text-xs font-sans font-normal tracking-wide mb-8 mt-1"
             >
               Let's begin crafting your timeless masterpiece.
             </motion.p>
 
-            <form onSubmit={handleWhatsAppSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '14px', position: 'relative', zIndex: 1 }}>
+            <form onSubmit={handleWhatsAppSubmit} className="relative z-10 flex flex-col gap-4">
               {/* Name & Phone Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
                 {/* Full Name */}
                 <motion.div
                   custom={0}
                   variants={fieldVariants}
                   initial="hidden"
                   animate="visible"
-                  style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
+                  className="flex flex-col gap-1"
                 >
-                  <label style={{ fontSize: '9px', color: '#b48a04', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1.5px', fontFamily: "'Inter', sans-serif" }}>
+                  <label className="text-[9px] text-[#b48a04] font-bold uppercase tracking-[1.5px] font-sans">
                     Full Name
                   </label>
                   <motion.input
@@ -218,9 +152,9 @@ export const BookingModal = ({ isOpen, onClose }) => {
                   variants={fieldVariants}
                   initial="hidden"
                   animate="visible"
-                  style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
+                  className="flex flex-col gap-1"
                 >
-                  <label style={{ fontSize: '9px', color: '#b48a04', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '1.5px', fontFamily: "'Inter', sans-serif" }}>
+                  <label className="text-[9px] text-[#b48a04] font-bold uppercase tracking-[1.5px] font-sans">
                     Phone Number
                   </label>
                   <motion.input
@@ -236,6 +170,7 @@ export const BookingModal = ({ isOpen, onClose }) => {
                     whileFocus={{ borderBottomColor: '#d4af37', paddingLeft: '4px' }}
                     style={inputStyle}
                     maxLength={10}
+                    placeholder="10-digit number"
                   />
                 </motion.div>
               </div>
@@ -246,33 +181,18 @@ export const BookingModal = ({ isOpen, onClose }) => {
                 variants={fieldVariants}
                 initial="hidden"
                 animate="visible"
-                style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}
+                className="flex flex-col gap-1"
               >
-                <label
-                  style={{
-                    fontSize: '9px',
-                    color: '#b48a04',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '1.5px',
-                    fontFamily: "'Inter', sans-serif",
-                    marginBottom: '4px'
-                  }}
-                >
+                <label className="text-[9px] text-[#b48a04] font-bold uppercase tracking-[1.5px] font-sans mb-1">
                   Event Date
                 </label>
                 <motion.div
                   whileHover={{ borderBottomColor: '#d4af37', cursor: 'pointer' }}
                   onClick={() => setShowCalendar(true)}
-                  style={{
-                    ...inputStyle,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    paddingBottom: '16px'
-                  }}
+                  className="flex items-center justify-between pb-4 transition-all duration-300"
+                  style={inputStyle}
                 >
-                  <span style={{ color: formData.date.length > 0 ? '#1a1a1a' : 'rgba(0,0,0,0.3)', fontSize: '13px' }}>
+                  <span className={cn("text-[13px]", formData.date.length > 0 ? "text-[#1a1a1a]" : "text-black/30")}>
                     {formData.date.length > 0 
                       ? formData.date.length === 1 
                         ? formData.date[0].toString() 
@@ -290,27 +210,19 @@ export const BookingModal = ({ isOpen, onClose }) => {
                 {/* Calendar Popup */}
                 <AnimatePresence>
                   {showCalendar && (
-                    <div style={{ position: 'fixed', inset: 0, zIndex: 1100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div className="fixed inset-0 z-[1100] flex items-center justify-center p-4">
                       <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setShowCalendar(false)}
-                        style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
+                        className="absolute inset-0 bg-black/70 backdrop-blur-sm"
                       />
                       <motion.div
                         initial={{ opacity: 0, scale: 0.9, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                        style={{ 
-                          position: 'relative', 
-                          zIndex: 1, 
-                          background: '#ffffff', 
-                          padding: '24px', 
-                          borderRadius: '8px', 
-                          border: '1px solid rgba(212,175,55,0.2)',
-                          boxShadow: '0 30px 60px rgba(0,0,0,0.1)'
-                        }}
+                        className="relative z-10 bg-white p-6 rounded-lg border border-[#d4af37]/20 shadow-xl max-w-full"
                       >
                         <BasicDatePicker 
                           value={formData.date}
@@ -320,18 +232,7 @@ export const BookingModal = ({ isOpen, onClose }) => {
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
                           onClick={() => setShowCalendar(false)}
-                          className="text-white bg-[#d4af37] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.7)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] cursor-pointer"
-                          style={{
-                            width: '100%',
-                            marginTop: '20px',
-                            border: 'none',
-                            padding: '12px',
-                            borderRadius: '4px',
-                            fontSize: '12px',
-                            fontWeight: 600,
-                            textTransform: 'uppercase',
-                            letterSpacing: '2px',
-                          }}
+                          className="w-full mt-5 text-white bg-[#d4af37] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.7)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] cursor-pointer py-3 rounded-[4px] text-[12px] font-semibold uppercase tracking-[2px]"
                         >
                           Done
                         </motion.button>
@@ -347,22 +248,13 @@ export const BookingModal = ({ isOpen, onClose }) => {
                 variants={fieldVariants}
                 initial="hidden"
                 animate="visible"
-                style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}
+                className="flex flex-col gap-1.5"
               >
-                <label
-                  style={{
-                    fontSize: '10px',
-                    color: '#d4af37',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '2px',
-                    fontFamily: "'Inter', sans-serif",
-                  }}
-                >
+                <label className="text-[10px] text-[#d4af37] font-bold uppercase tracking-[2px] font-sans">
                   Message
                 </label>
                 <motion.textarea
-                  rows={3}
+                  rows={window.innerWidth < 640 ? 2 : 3}
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   whileFocus={{ borderBottomColor: '#d4af37', paddingLeft: '8px' }}
@@ -371,34 +263,13 @@ export const BookingModal = ({ isOpen, onClose }) => {
                 />
               </motion.div>
 
-              {/* Submit */}
-              <motion.div
-                custom={4}
-                variants={fieldVariants}
-                initial="hidden"
-                animate="visible"
-              >
+              {/* Submit Button */}
+              <motion.div custom={4} variants={fieldVariants} initial="hidden" animate="visible">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   type="submit"
-                  className="text-white bg-gradient-to-br from-[#d4af37] to-[#fbbf24] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.7)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] cursor-pointer shadow-lg"
-                  style={{
-                    width: '100%',
-                    border: 'none',
-                    padding: '16px',
-                    borderRadius: '2px',
-                    fontWeight: 600,
-                    fontSize: '12px',
-                    textTransform: 'uppercase',
-                    letterSpacing: '3px',
-                    marginTop: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '10px',
-                    fontFamily: "'Inter', sans-serif",
-                  }}
+                  className="w-full mt-3 text-white bg-gradient-to-br from-[#d4af37] to-[#fbbf24] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.7)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] cursor-pointer shadow-lg py-4 sm:py-5 rounded-[2px] font-bold text-xs uppercase tracking-[3px] flex items-center justify-center gap-2.5 font-sans"
                 >
                   Confirm Booking
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -414,3 +285,4 @@ export const BookingModal = ({ isOpen, onClose }) => {
     </AnimatePresence>
   );
 };
+

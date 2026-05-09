@@ -195,34 +195,20 @@ export const Reviews = () => {
   return (
     <section
       id="reviews"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-24 pb-20 md:pt-32 md:pb-24 bg-cover bg-center bg-no-repeat bg-fixed"
       style={{
-        position: 'relative',
-        backgroundImage:
-          'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.65)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&auto=format&fit=crop&q=60")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        color: '#cbd5e1',
-        paddingTop: '120px',
-        paddingBottom: '100px',
+        backgroundImage: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.65)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&auto=format&fit=crop&q=60")',
       }}
     >
       {/* Animated gold gradient overlay */}
       <motion.div
         animate={{ opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.12) 0%, transparent 65%)',
-          pointerEvents: 'none',
-        }}
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.12) 0%, transparent 65%)' }}
       />
 
-      <div 
-        className="px-6"
-        style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 1 }}
-      >
+      <div className="container max-w-[1200px] mx-auto text-center relative z-[1] px-6">
         <SectionHeading
           eyebrow="Testimonials"
           title="Client Love"
@@ -239,11 +225,7 @@ export const Reviews = () => {
 
 
 /* ── Contact ── */
-/* ── Contact ── */
 export const Contact = ({ onBookClick }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
-
   const staggerItems = {
     hidden: {},
     visible: { transition: { staggerChildren: 0.12, delayChildren: 0.2 } },
@@ -254,18 +236,9 @@ export const Contact = ({ onBookClick }) => {
   };
 
   return (
-    <section
-      id="contact"
-      style={{
-        background: '#fffbf5',
-        position: 'relative',
-        paddingTop: '120px',
-        paddingBottom: '60px',
-        overflow: 'hidden',
-      }}
-    >
+    <section id="contact" className="relative min-h-[100dvh] flex flex-col justify-center pt-24 pb-12 md:pt-32 md:pb-16 overflow-hidden bg-[#fffbf5]">
       {/* Animated Liquid Silk Background */}
-      <div style={{ position: 'absolute', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <motion.div
           animate={{ 
             background: [
@@ -277,57 +250,21 @@ export const Contact = ({ onBookClick }) => {
             ]
           }}
           transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
-          style={{ position: 'absolute', inset: 0, opacity: 0.6 }}
+          className="absolute inset-0 opacity-60"
         />
         
         {/* Large Parallax Background Text */}
         <motion.div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            fontSize: '20vw',
-            fontWeight: 900,
-            color: 'rgba(212, 175, 55, 0.03)',
-            whiteSpace: 'nowrap',
-            fontFamily: "'Cormorant Garamond', serif",
-            zIndex: -1,
-            pointerEvents: 'none',
-            userSelect: 'none'
-          }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-black text-[#d4af37]/[0.03] whitespace-nowrap font-serif z-[-1] pointer-events-none select-none"
           animate={{ x: ['-20%', '0%', '-20%'] }}
           transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
         >
           NIRMAL DECOR
         </motion.div>
-
-        {/* Floating Accent Blobs */}
-        <motion.div
-          animate={{ 
-            scale: [1, 1.2, 1],
-            x: [0, 100, 0],
-            y: [0, 50, 0]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
-          style={{
-            position: 'absolute',
-            top: '-10%',
-            right: '-10%',
-            width: '800px',
-            height: '800px',
-            background: 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, transparent 70%)',
-          }}
-        />
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 5%', position: 'relative', zIndex: 1 }}>
-        <div style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', 
-          gap: '60px',
-          alignItems: 'center'
-        }}>
+      <div className="container max-w-[1200px] mx-auto px-6 relative z-[1]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20 items-center">
           {/* Left: Contact Info */}
           <motion.div
             variants={staggerItems}
@@ -335,77 +272,40 @@ export const Contact = ({ onBookClick }) => {
             whileInView="visible"
             viewport={{ once: true }}
           >
-            <motion.div 
-              variants={fadeUp}
-              style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}
-            >
-              <div style={{ width: '30px', height: '1px', background: '#d4af37' }} />
-              <span style={{
-                color: '#d4af37',
-                letterSpacing: '5px',
-                textTransform: 'uppercase',
-                fontSize: '10px',
-                fontWeight: 700
-              }}>
-                Contact Us
-              </span>
+            <motion.div variants={fadeUp} className="flex items-center gap-3 mb-4">
+              <div className="w-[30px] h-[1px] bg-[#d4af37]" />
+              <span className="text-[#d4af37] tracking-[5px] uppercase text-[10px] font-bold">Contact Us</span>
             </motion.div>
             
-            <motion.h2
-              variants={fadeUp}
-              style={{
-                fontFamily: "'Cormorant Garamond', serif",
-                fontSize: 'clamp(2.5rem, 5vw, 4.5rem)',
-                fontWeight: 300,
-                color: '#1a1a1a',
-                margin: '0 0 40px',
-                lineHeight: 1.05
-              }}
-            >
+            <motion.h2 variants={fadeUp} className="font-serif text-[clamp(2.5rem,6vw,4.5rem)] font-light text-[#1a1a1a] m-0 mb-10 leading-[1.05]">
               The Beginning of <br />
-              Your <span style={{ fontStyle: 'italic', color: '#d4af37' }}>Story</span>
+              Your <span className="italic text-[#d4af37]">Story</span>
             </motion.h2>
 
-            <motion.div variants={fadeUp} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '30px' }}>
-              <div style={{ padding: '24px', background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(10px)', borderLeft: '2px solid #d4af37' }}>
-                <h4 style={{ fontSize: '9px', color: '#d4af37', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '10px', fontWeight: 700 }}>Studio</h4>
-                <p style={{ color: '#444', fontSize: '14px', fontWeight: 300, lineHeight: 1.6, margin: 0 }}>
+            <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+              <div className="p-6 bg-white/40 backdrop-blur-md border-l-2 border-[#d4af37]">
+                <h4 className="text-[9px] text-[#d4af37] uppercase tracking-[2px] mb-2.5 font-bold">Studio</h4>
+                <p className="text-[#444] text-sm font-light leading-relaxed m-0">
                   123 Grand Emerald Ave,<br />
                   Chennai, Tamil Nadu
                 </p>
               </div>
 
-              <div style={{ padding: '24px', background: 'rgba(255,255,255,0.4)', backdropFilter: 'blur(10px)', borderLeft: '2px solid #d4af37' }}>
-                <h4 style={{ fontSize: '9px', color: '#d4af37', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '10px', fontWeight: 700 }}>Connect</h4>
-                <p style={{ color: '#1a1a1a', fontSize: '18px', fontWeight: 300, margin: 0, fontFamily: "'Cormorant Garamond', serif" }}>
-                  +91 99942 06952
-                </p>
-                <p style={{ color: '#555', fontSize: '13px', fontWeight: 300, marginTop: '4px' }}>
-                  info@nirmaldecor.com
-                </p>
+              <div className="p-6 bg-white/40 backdrop-blur-md border-l-2 border-[#d4af37]">
+                <h4 className="text-[9px] text-[#d4af37] uppercase tracking-[2px] mb-2.5 font-bold">Connect</h4>
+                <p className="text-[#1a1a1a] text-lg font-light m-0 font-serif">+91 99942 06952</p>
+                <p className="text-[#555] text-xs font-light mt-1">info@nirmaldecor.com</p>
               </div>
             </motion.div>
 
-            {/* Social Icons (Bright Style) */}
-            <motion.div variants={fadeUp} style={{ display: 'flex', gap: '16px', marginTop: '40px' }}>
+            {/* Social Icons */}
+            <motion.div variants={fadeUp} className="flex flex-wrap gap-4 mt-10">
               {[FacebookIcon, TwitterIcon, InstagramIcon, LinkedinIcon].map((Icon, i) => (
                 <motion.a
                   key={i}
                   href="#"
                   whileHover={{ scale: 1.1, color: '#d4af37' }}
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '50%',
-                    background: '#fff',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: '#666',
-                    boxShadow: '0 10px 20px rgba(0,0,0,0.05)',
-                    transition: 'all 0.3s ease',
-                    border: '1px solid rgba(212,175,55,0.1)'
-                  }}
+                  className="w-11 h-11 rounded-full bg-white flex items-center justify-center color-[#666] shadow-[0_10px_20px_rgba(0,0,0,0.05)] transition-all border border-[#d4af37]/10"
                 >
                   <Icon />
                 </motion.a>
@@ -419,59 +319,22 @@ export const Contact = ({ onBookClick }) => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: EASE }}
-            style={{
-              background: 'rgba(255, 255, 255, 0.7)',
-              backdropFilter: 'blur(20px)',
-              padding: '64px 48px',
-              borderRadius: '2px',
-              boxShadow: '0 40px 80px rgba(180,130,20,0.12)',
-              border: '1px solid #fff',
-              position: 'relative',
-              textAlign: 'center'
-            }}
+            className="relative bg-white/70 backdrop-blur-2xl px-8 py-16 sm:p-16 rounded-[2px] shadow-[0_40px_80px_rgba(180,130,20,0.12)] border border-white text-center"
           >
-            {/* Outer Frame Accent */}
-            <div style={{ position: 'absolute', inset: '12px', border: '0.5px solid rgba(212,175,55,0.3)', pointerEvents: 'none' }} />
+            <div className="absolute inset-3 border-[0.5px] border-[#d4af37]/30 pointer-events-none" />
 
-            <div style={{ marginBottom: '32px' }}>
-              <svg width="40" height="40" viewBox="0 0 100 100" fill="none" style={{ margin: '0 auto' }}>
+            <div className="mb-8">
+              <svg width="40" height="40" viewBox="0 0 100 100" fill="none" className="mx-auto">
                 <circle cx="50" cy="50" r="48" stroke="#d4af37" strokeWidth="0.5" />
                 <path d="M50 30 L50 70 M30 50 L70 50" stroke="#d4af37" strokeWidth="0.5" />
                 <path d="M35 35 L65 65 M35 65 L65 35" stroke="#d4af37" strokeWidth="0.5" />
               </svg>
             </div>
 
-            <h3 style={{
-              fontFamily: "'Cormorant Garamond', serif",
-              fontSize: '2.5rem',
-              color: '#1a1a1a',
-              margin: '0 0 8px',
-              fontWeight: 300,
-              letterSpacing: '1px'
-            }}>
-              Consultation
-            </h3>
-            <p style={{
-              color: '#d4af37',
-              fontSize: '11px',
-              letterSpacing: '4px',
-              textTransform: 'uppercase',
-              marginBottom: '32px',
-              fontWeight: 600
-            }}>
-              Bespoke Artistry
-            </p>
+            <h3 className="font-serif text-[2rem] sm:text-[2.5rem] text-[#1a1a1a] m-0 mb-2 font-light tracking-[1px]">Consultation</h3>
+            <p className="text-[#d4af37] text-[10px] sm:text-[11px] tracking-[4px] uppercase mb-8 font-semibold">Bespoke Artistry</p>
             
-            <p style={{
-              color: '#666',
-              fontSize: '15px',
-              fontWeight: 300,
-              lineHeight: 1.8,
-              marginBottom: '48px',
-              fontFamily: "'Inter', sans-serif",
-              maxWidth: '300px',
-              margin: '0 auto 48px'
-            }}>
+            <p className="text-[#666] text-sm sm:text-[15px] font-light leading-relaxed mb-12 font-sans max-w-[300px] mx-auto">
               Reserve your exclusive design session and let us bring your vision to life with timeless elegance.
             </p>
 
@@ -479,17 +342,7 @@ export const Contact = ({ onBookClick }) => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               onClick={onBookClick}
-              className="text-white bg-gradient-to-br from-[#d4af37] to-[#fbbf24] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.7)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] cursor-pointer shadow-lg"
-              style={{
-                border: 'none',
-                padding: '20px 56px',
-                borderRadius: '1px',
-                fontSize: '12px',
-                fontWeight: 700,
-                textTransform: 'uppercase',
-                letterSpacing: '3px',
-                fontFamily: "'Inter', sans-serif",
-              }}
+              className="w-full sm:w-auto text-white bg-gradient-to-br from-[#d4af37] to-[#fbbf24] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.7)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] cursor-pointer shadow-lg px-10 sm:px-14 py-4 sm:py-5 font-sans text-[11px] sm:text-[12px] font-bold tracking-[3px] uppercase rounded-[1px] text-center"
             >
               Reserve Now
             </motion.button>
@@ -497,26 +350,9 @@ export const Contact = ({ onBookClick }) => {
         </div>
 
         {/* Brand Footer */}
-        <div style={{ 
-          marginTop: '60px', 
-          paddingTop: '40px', 
-          borderTop: '1px solid rgba(212,175,55,0.1)',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '20px'
-        }}>
-          <span style={{ fontFamily: "'Cormorant Garamond', serif", fontSize: '1.5rem', color: '#d4af37' }}>
-            Nirmal Decor
-          </span>
-          <p style={{ 
-            color: 'rgba(0,0,0,0.4)', 
-            fontSize: '10px', 
-            letterSpacing: '2px', 
-            textTransform: 'uppercase',
-            margin: 0
-          }}>
+        <div className="mt-16 pt-10 border-t border-[#d4af37]/10 flex flex-col sm:flex-row justify-between items-center gap-5 text-center sm:text-left">
+          <span className="font-serif text-2xl text-[#d4af37]">Nirmal Decor</span>
+          <p className="text-black/40 text-[10px] tracking-[2px] uppercase m-0">
             ©2026 · Handcrafted with passion in Tamil Nadu
           </p>
         </div>
