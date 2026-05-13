@@ -330,6 +330,8 @@ const Home = ({ onBookClick }) => {
                 animate={{ scale: 1 }}
                 transition={{ duration: 1.6, ease: EASE, delay: 0.6 }}
                 className="w-full h-full object-cover"
+                fetchPriority="high"
+                decoding="sync"
               />
               <div className="absolute inset-0 border-[0.5px] border-[#d4af37]/50 rounded-[2px] pointer-events-none" />
             </motion.div>

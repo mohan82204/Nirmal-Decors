@@ -284,7 +284,7 @@ export const Contact = ({ onBookClick }) => {
 
             <motion.div variants={fadeUp} className="grid grid-cols-1 sm:grid-cols-2 gap-8">
               <div className="p-6 bg-white/40 backdrop-blur-md border-l-2 border-[#d4af37]">
-                <h4 className="text-[9px] text-[#d4af37] uppercase tracking-[2px] mb-2.5 font-bold">Studio</h4>
+                <h3 className="text-[9px] text-[#d4af37] uppercase tracking-[2px] mb-2.5 font-bold">Studio</h3>
                 <p className="text-[#444] text-sm font-light leading-relaxed m-0">
                   123 Grand Emerald Ave,<br />
                   Chennai, Tamil Nadu
@@ -292,7 +292,7 @@ export const Contact = ({ onBookClick }) => {
               </div>
 
               <div className="p-6 bg-white/40 backdrop-blur-md border-l-2 border-[#d4af37]">
-                <h4 className="text-[9px] text-[#d4af37] uppercase tracking-[2px] mb-2.5 font-bold">Connect</h4>
+                <h3 className="text-[9px] text-[#d4af37] uppercase tracking-[2px] mb-2.5 font-bold">Connect</h3>
                 <p className="text-[#1a1a1a] text-lg font-light m-0 font-serif">+91 99942 06952</p>
                 <p className="text-[#555] text-xs font-light mt-1">info@nirmaldecor.com</p>
               </div>
@@ -300,10 +300,11 @@ export const Contact = ({ onBookClick }) => {
 
             {/* Social Icons */}
             <motion.div variants={fadeUp} className="flex flex-wrap gap-4 mt-10">
-              {[FacebookIcon, TwitterIcon, InstagramIcon, LinkedinIcon].map((Icon, i) => (
+              {[{Icon: FacebookIcon, name: 'Facebook'}, {Icon: TwitterIcon, name: 'Twitter'}, {Icon: InstagramIcon, name: 'Instagram'}, {Icon: LinkedinIcon, name: 'LinkedIn'}].map(({Icon, name}, i) => (
                 <motion.a
                   key={i}
                   href="#"
+                  aria-label={name}
                   whileHover={{ scale: 1.1, color: '#d4af37' }}
                   className="w-11 h-11 rounded-full bg-white flex items-center justify-center color-[#666] shadow-[0_10px_20px_rgba(0,0,0,0.05)] transition-all border border-[#d4af37]/10"
                 >

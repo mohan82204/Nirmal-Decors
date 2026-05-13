@@ -80,7 +80,7 @@ const SectionHeading = () => {
           initial={{ y: '110%' }}
           animate={inView ? { y: '0%' } : {}}
           transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-          className="font-serif text-[clamp(2.2rem,6vw,4rem)] font-light m-0 tracking-[-0.5px] text-white"
+          className="font-serif text-[clamp(2.2rem,6vw,4rem)] font-light m-0 tracking-[-0.5px] !text-white"
         >
           Our Signature Series
         </motion.h2>
