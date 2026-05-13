@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <!-- 
+    NOTE: Replace 'https://nirmaldecor.com' with your actual domain 
+    if it is different before uploading to Google Search Console.
+  -->
+  <url>
+    <loc>https://nirmaldecor.com/</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
