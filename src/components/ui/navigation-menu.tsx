@@ -134,23 +134,22 @@ function BottomNav() {
     <motion.div
       initial={{ y: 100 }}
       animate={{ y: 0 }}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[400px]"
+      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-[400px]"
     >
-      <nav className="flex items-center justify-around h-16 px-4 rounded-3xl border border-[rgba(212,175,55,0.25)] backdrop-blur-xl shadow-2xl" style={{ background: 'rgba(5, 5, 5, 0.85)' }}>
+      <nav 
+        className="flex items-center justify-around h-[68px] px-2 rounded-full border border-white/60 backdrop-blur-xl shadow-[0_12px_40px_rgba(180,130,20,0.15)]" 
+        style={{ background: 'rgba(255, 255, 255, 0.85)' }}
+      >
         {navItems.map((item) => (
           <a
             key={item.name}
             href={item.href}
-            className="flex flex-col items-center justify-center gap-1 group relative min-w-[44px] min-h-[44px]"
+            className="flex flex-col items-center justify-center gap-1 group relative w-[60px] h-[52px] rounded-2xl transition-all active:scale-95 active:bg-[#d4af37]/10"
           >
-            <item.icon className="w-5 h-5 text-white/50 group-hover:text-[#d4af37] transition-colors" />
-            <span className="text-[8px] tracking-widest text-white/30 group-hover:text-[#d4af37] transition-colors uppercase font-medium">
+            <item.icon className="w-[22px] h-[22px] text-[#b45309]/60 group-hover:text-[#b45309] transition-colors" strokeWidth={1.5} />
+            <span className="text-[9px] tracking-[2px] text-[#b45309]/60 group-hover:text-[#b45309] transition-colors uppercase font-bold">
               {item.name}
             </span>
-            <motion.div
-              layoutId="nav-glow"
-              className="absolute -bottom-1 w-1 h-1 rounded-full bg-[#d4af37] opacity-0 group-hover:opacity-100 transition-opacity"
-            />
           </a>
         ))}
       </nav>

@@ -126,7 +126,8 @@ export const CardTransformed = React.forwardRef<
     const range = React.useMemo(() => [start, end], [start, end])
     const rotateRange = [range[0] - 1.5, range[1] / 1.5]
 
-    const y = useTransform(scrollYProgress, range, ["0%", "-180%"])
+    const y = useTransform(scrollYProgress, range, ["0%", "-40%"])
+    const opacity = useTransform(scrollYProgress, range, [1, 0])
     const rotate = useTransform(scrollYProgress, rotateRange, [
       incrementRotation,
       0,
@@ -147,6 +148,7 @@ export const CardTransformed = React.forwardRef<
     const cardStyle = {
       top: index * incrementY,
       transform,
+      opacity,
       backfaceVisibility: "hidden" as const,
       zIndex: (arrayLength - index) * incrementZ,
       filter,

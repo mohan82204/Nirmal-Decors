@@ -12,48 +12,48 @@ const galleryItems = [
     id: 1,
     label: 'Floral Canopy',
     category: 'Floral Design',
-    img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1280&auto=format&fit=crop',
-    bg: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1280&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&auto=format&fit=crop&q=60',
     desc: 'A breathtaking archway of fresh florals cascading in soft blush and ivory tones, setting an ethereal entrance for the most important walk of your life.',
   },
   {
     id: 2,
     label: 'Golden Reception',
     category: 'Table Setting',
-    img: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1280&auto=format&fit=crop',
-    bg: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1920&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1280&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1920&auto=format&fit=crop&q=60',
     desc: 'Opulent gold centrepieces, candlelight, and custom linens transform every table into a statement of elegance your guests will remember forever.',
   },
   {
     id: 3,
     label: 'Ceremony Arch',
     category: 'Wedding Decor',
-    img: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1280&auto=format&fit=crop',
-    bg: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1920&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1280&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1920&auto=format&fit=crop&q=60',
     desc: 'Handcrafted ceremony arches entwined with seasonal blooms and flowing fabric — the perfect frame for your vows.',
   },
   {
     id: 4,
     label: 'Bridal Stage',
     category: 'Stage Design',
-    img: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?w=1280&auto=format&fit=crop',
-    bg: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?w=1920&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?w=1280&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?w=1920&auto=format&fit=crop&q=60',
     desc: 'Grand bridal stages adorned with draping silks and curated floral walls — designed to make you the centerpiece of every gaze.',
   },
   {
     id: 5,
     label: 'Mandap Elegance',
     category: 'Traditional Decor',
-    img: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1280&auto=format&fit=crop',
-    bg: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1920&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1280&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1920&auto=format&fit=crop&q=60',
     desc: 'Traditional mandap designs reimagined with contemporary elegance — honouring sacred rituals while creating a visually stunning ceremony.',
   },
   {
     id: 6,
     label: 'Candlelit Aisle',
     category: 'Ambient Lighting',
-    img: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1280&auto=format&fit=crop',
-    bg: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&auto=format&fit=crop',
+    img: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1280&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&auto=format&fit=crop&q=60',
     desc: 'Hundreds of candles casting a warm golden glow — a romantic aisle that feels like a dream and photographs like a painting.',
   },
 ];
@@ -223,7 +223,7 @@ const Gallery = () => {
 
       <section
         id="gallery"
-        className="relative w-full overflow-visible h-[400vh]"
+        className="relative w-full overflow-visible h-[250vh]"
         style={{
           background: 'linear-gradient(180deg, #fffbf5 0%, #fef3c7 60%, #fde68a 100%)',
         }}
@@ -243,14 +243,14 @@ const Gallery = () => {
             style={{ background: 'radial-gradient(circle, rgba(249,168,212,0.1) 0%, transparent 70%)' }}
           />
 
-          <div className="w-full max-w-[1400px] px-[6%] z-10 absolute top-24 sm:top-28">
+          <div className="w-full max-w-[1400px] px-[6%] z-10 absolute top-12 sm:top-16">
             <SectionHeading
               eyebrow="Visual Storytelling"
               title="The Exhibition"
             />
           </div>
 
-          <div className="w-full h-full pt-20 relative z-0">
+          <div className="w-full h-full pt-10 sm:pt-20 relative z-0">
             <CircularGallery 
               items={circularGalleryData} 
               radius={radius}

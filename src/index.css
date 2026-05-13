@@ -117,11 +117,12 @@
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   }
 
-  body {
+  html, body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     margin: 0;
-    overflow-x: hidden;
+    overflow-x: clip;
+    width: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     touch-action: manipulation;
@@ -183,4 +184,6 @@ h1, h2, h3 {
 
 #root {
   min-height: 100vh;
+  overflow-x: clip;
+  width: 100%;
 }

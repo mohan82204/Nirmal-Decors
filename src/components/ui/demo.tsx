@@ -78,7 +78,7 @@ export function TestimonialsVariant() {
 
   return (
     <div className={getSectionClass(theme)}>
-      <ContainerScroll className="container h-[350vh]">
+      <ContainerScroll className="container h-[200vh]">
         <div className="sticky left-0 top-0 h-svh w-full flex items-center justify-center">
           <CardsContainer className="mx-auto size-full h-[450px] w-[350px]">
             {TESTIMONIALS.map((testimonial, index) => (
