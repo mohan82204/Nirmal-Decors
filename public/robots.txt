@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
 
-# Replace with your actual domain
-Sitemap: https://nirmaldecor.com/sitemap.xml
+Sitemap: https://www.nirmaldecors.in/sitemap.xml
