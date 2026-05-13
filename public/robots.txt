@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://nirmaldecor.in/sitemap.xml
+Sitemap: https://www.nirmaldecors.in/sitemap.xml
