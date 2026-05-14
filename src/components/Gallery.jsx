@@ -141,12 +141,12 @@ const Gallery = () => {
             className="fixed inset-0 z-[1000] bg-black overflow-y-auto"
           >
             <motion.button
-               initial={{ opacity: 0, scale: 0.8 }}
-               animate={{ opacity: 1, scale: 1 }}
-               exit={{ opacity: 0, scale: 0.8 }}
-               transition={{ delay: 0.5, ...SPRING }}
-               onClick={() => setSelected(null)}
-               className="fixed top-6 right-6 sm:top-8 sm:right-8 z-[1100] bg-white/10 border border-white/20 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer text-white backdrop-blur-md hover:bg-white/20 transition-colors"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ delay: 0.5, ...SPRING }}
+              onClick={() => setSelected(null)}
+              className="fixed top-6 right-6 sm:top-8 sm:right-8 z-[1100] bg-white/10 border border-white/20 rounded-full w-12 h-12 flex items-center justify-center cursor-pointer text-white backdrop-blur-md hover:bg-white/20 transition-colors"
             >
               <X size={20} />
             </motion.button>
@@ -161,7 +161,7 @@ const Gallery = () => {
               textBlend
             >
               <div className="max-w-4xl mx-auto py-12 px-6 flex flex-col items-center text-center sm:text-left sm:items-start">
-                <motion.h3 
+                <motion.h3
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: EASE }}
@@ -169,7 +169,7 @@ const Gallery = () => {
                 >
                   {selected.label}
                 </motion.h3>
-                <motion.p 
+                <motion.p
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.8, ease: EASE, delay: 0.1 }}
@@ -177,43 +177,43 @@ const Gallery = () => {
                 >
                   {selected.desc}
                 </motion.p>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12 sm:mt-16 w-full">
-                   <motion.div
-                     initial={{ opacity: 0, scale: 0.95 }}
-                     whileInView={{ opacity: 1, scale: 1 }}
-                     transition={{ duration: 0.8, ease: EASE, delay: 0.2 }}
-                     className="aspect-[4/3] rounded-2xl overflow-hidden shadow-lg w-full"
-                   >
-                      <img src={selected.img} className="w-full h-full object-cover" alt="Detail" />
-                   </motion.div>
-                   <motion.div
-                     initial={{ opacity: 0, scale: 0.95 }}
-                     whileInView={{ opacity: 1, scale: 1 }}
-                     transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
-                     className="flex flex-col justify-center items-center sm:items-start text-center sm:text-left"
-                   >
-                      <h4 className="text-[10px] uppercase tracking-[3px] text-[#d4af37] mb-4 font-bold">The Vision</h4>
-                      <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
-                         Every detail is meticulously planned to create a cohesive and breathtaking atmosphere. 
-                         We combine traditional elements with modern aesthetics to tell your unique love story.
-                      </p>
-                   </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, ease: EASE, delay: 0.2 }}
+                    className="aspect-[4/3] rounded-2xl overflow-hidden shadow-lg w-full"
+                  >
+                    <img src={selected.img} className="w-full h-full object-cover" alt="Detail" />
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8, ease: EASE, delay: 0.3 }}
+                    className="flex flex-col justify-center items-center sm:items-start text-center sm:text-left"
+                  >
+                    <h4 className="text-[10px] uppercase tracking-[3px] text-[#d4af37] mb-4 font-bold">The Vision</h4>
+                    <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
+                      Every detail is meticulously planned to create a cohesive and breathtaking atmosphere.
+                      We combine traditional elements with modern aesthetics to tell your unique love story.
+                    </p>
+                  </motion.div>
                 </div>
 
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 40 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   className="mt-16 sm:mt-20 text-center"
                 >
-                   <motion.button 
+                  <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setSelected(null)}
                     className="w-full sm:w-auto text-white bg-gradient-to-br from-[#d4af37] to-[#fbbf24] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.7)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] cursor-pointer shadow-lg px-12 py-4 font-sans text-[12px] font-bold tracking-[3px] uppercase rounded-[1px]"
-                   >
-                      Close Gallery
-                   </motion.button>
+                  >
+                    Close Gallery
+                  </motion.button>
                 </motion.div>
               </div>
             </ScrollExpandMedia>
@@ -251,8 +251,8 @@ const Gallery = () => {
           </div>
 
           <div className="w-full h-full pt-10 sm:pt-20 relative z-0">
-            <CircularGallery 
-              items={circularGalleryData} 
+            <CircularGallery
+              items={circularGalleryData}
               radius={radius}
               autoRotateSpeed={0.03}
               onItemClick={(item) => setSelected(item.raw)}

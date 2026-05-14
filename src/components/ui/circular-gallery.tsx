@@ -10,7 +10,7 @@ export interface GalleryItem {
   common: string;
   binomial: string;
   photo: {
-    url: string; 
+    url: string;
     text: string;
     pos?: string;
     by: string;
@@ -24,6 +24,8 @@ interface CircularGalleryProps extends HTMLAttributes<HTMLDivElement> {
   radius?: number;
   /** Controls the speed of auto-rotation when not scrolling. */
   autoRotateSpeed?: number;
+  /** External scroll progress (0 to 1) to drive rotation. */
+  scrollProgress?: any; // Accepting MotionValue or number
   /** Callback when an item is clicked */
   onItemClick?: (item: GalleryItem) => void;
 }
@@ -81,7 +83,7 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
     }, [isScrolling, autoRotateSpeed]);
 
     const anglePerItem = 360 / items.length;
-    
+
     return (
       <div
         ref={ref}
@@ -107,7 +109,7 @@ const CircularGallery = React.forwardRef<HTMLDivElement, CircularGalleryProps>(
 
             return (
               <div
-                key={item.photo.url} 
+                key={item.photo.url}
                 role="group"
                 aria-label={item.common}
                 className="absolute w-[240px] h-[320px] cursor-pointer"

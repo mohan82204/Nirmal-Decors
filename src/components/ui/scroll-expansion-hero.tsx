@@ -202,16 +202,16 @@ const ScrollExpandMedia = ({
                 {mediaType === 'video' ? (
                   mediaSrc.includes('youtube.com') || mediaSrc.includes('youtu.be') ? (
                     <div className='relative w-full h-full pointer-events-none'>
-                       <iframe
+                      <iframe
                         width='100%'
                         height='100%'
                         src={
                           mediaSrc.includes('embed')
                             ? mediaSrc +
-                              (mediaSrc.includes('?') ? '&' : '?') +
-                              'autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1'
+                            (mediaSrc.includes('?') ? '&' : '?') +
+                            'autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1'
                             : mediaSrc.replace('watch?v=', 'embed/').split('&')[0] +
-                              '?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1'
+                            '?autoplay=1&mute=1&loop=1&controls=0&showinfo=0&rel=0&disablekb=1&modestbranding=1'
                         }
                         className='w-full h-full rounded-xl'
                         frameBorder='0'
@@ -292,9 +292,8 @@ const ScrollExpandMedia = ({
               </div>
 
               <div
-                className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${
-                  textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
-                }`}
+                className={`flex items-center justify-center text-center gap-4 w-full relative z-10 transition-none flex-col ${textBlend ? 'mix-blend-difference' : 'mix-blend-normal'
+                  }`}
               >
                 <motion.h2
                   className='text-4xl md:text-5xl lg:text-8xl font-serif text-white transition-none'

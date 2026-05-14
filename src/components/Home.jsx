@@ -311,7 +311,7 @@ const Home = ({ onBookClick }) => {
           <motion.div
             initial={{ opacity: 0, x: 60 }}
             animate={{ opacity: 1, x: 0, y: [0, -15, 0] }}
-            transition={{ 
+            transition={{
               opacity: { duration: 1.2, ease: EASE, delay: 0.5 },
               x: { duration: 1.2, ease: EASE, delay: 0.5 },
               y: { duration: 5, repeat: Infinity, ease: 'easeInOut' }
@@ -340,7 +340,7 @@ const Home = ({ onBookClick }) => {
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: [0, 10, 0] }}
-              transition={{ 
+              transition={{
                 opacity: { duration: 1, ease: EASE, delay: 1 },
                 y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }
               }}
@@ -358,7 +358,7 @@ const Home = ({ onBookClick }) => {
             <motion.div
               initial={{ opacity: 0, scale: 0.6 }}
               animate={{ opacity: 1, scale: [1, 1.08, 1] }}
-              transition={{ 
+              transition={{
                 opacity: { duration: 0.8, ease: EASE, delay: 1.3 },
                 scale: { duration: 3, repeat: Infinity, ease: 'easeInOut' }
               }}

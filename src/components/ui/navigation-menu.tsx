@@ -56,8 +56,9 @@ export function AnimatedNavFramer() {
 
   return (
     <div className="fixed top-6 left-1/2 -translate-x-1/2 z-50">
-      <motion.nav
-        initial={{ y: -80, opacity: 0 }}
+      <div className="relative">
+        <motion.nav
+          initial={{ y: -80, opacity: 0 }}
         animate={isExpanded ? 'expanded' : 'collapsed'}
         variants={{
           expanded: {
@@ -126,7 +127,8 @@ export function AnimatedNavFramer() {
         </AnimatePresence>
       </motion.nav>
     </div>
-  );
+  </div>
+);
 }
 
 function BottomNav() {
@@ -134,20 +136,20 @@ function BottomNav() {
     <motion.div
       initial={{ y: 100 }}
       animate={{ y: 0 }}
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-[400px]"
+      className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[90%] max-w-[360px]"
     >
       <nav 
-        className="flex items-center justify-around h-[68px] px-2 rounded-full border border-white/60 backdrop-blur-xl shadow-[0_12px_40px_rgba(180,130,20,0.15)]" 
+        className="flex items-center justify-around h-[56px] px-1 rounded-full border border-white/60 backdrop-blur-xl shadow-[0_8px_32px_rgba(180,130,20,0.15)]" 
         style={{ background: 'rgba(255, 255, 255, 0.85)' }}
       >
         {navItems.map((item) => (
           <a
             key={item.name}
             href={item.href}
-            className="flex flex-col items-center justify-center gap-1 group relative w-[60px] h-[52px] rounded-2xl transition-all active:scale-95 active:bg-[#d4af37]/10"
+            className="flex flex-col items-center justify-center gap-0.5 group relative w-[54px] h-[46px] rounded-xl transition-all active:scale-95 active:bg-[#d4af37]/10"
           >
-            <item.icon className="w-[22px] h-[22px] text-[#b45309]/60 group-hover:text-[#b45309] transition-colors" strokeWidth={1.5} />
-            <span className="text-[9px] tracking-[2px] text-[#b45309]/60 group-hover:text-[#b45309] transition-colors uppercase font-bold">
+            <item.icon className="w-[18px] h-[18px] text-[#b45309]/60 group-hover:text-[#b45309] transition-colors" strokeWidth={1.5} />
+            <span className="text-[8px] tracking-[1.5px] text-[#b45309]/60 group-hover:text-[#b45309] transition-colors uppercase font-bold">
               {item.name}
             </span>
           </a>

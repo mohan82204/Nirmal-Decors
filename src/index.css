@@ -8,8 +8,13 @@
 }
 
 @keyframes gradient-rotate {
-  from { --gradient-angle: 0deg; }
-  to   { --gradient-angle: 360deg; }
+  from {
+    --gradient-angle: 0deg;
+  }
+
+  to {
+    --gradient-angle: 360deg;
+  }
 }
 
 @theme {
@@ -117,7 +122,8 @@
     --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
   }
 
-  html, body {
+  html,
+  body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
     margin: 0;
@@ -165,7 +171,9 @@ html.lenis {
   border: 0.5px solid rgba(255, 255, 255, 0.1);
 }
 
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   font-family: var(--font-serif);
   color: #1a1a1a;
   letter-spacing: -0.02em;
