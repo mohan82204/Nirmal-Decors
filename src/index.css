@@ -135,18 +135,6 @@
   }
 }
 
-/* Shimmer bar CSS animation — one-shot entry animation for hero gold bar */
-@keyframes shimmerIn {
-  from { transform: scaleX(0); transform-origin: left; }
-  to   { transform: scaleX(1); transform-origin: left; }
-}
-
-/* Off-screen sections: defer paint & layout */
-section:not(#home) {
-  content-visibility: auto;
-  contain-intrinsic-size: 0 600px;
-}
-
 /* Custom Scrollbar for Lenis */
 html.lenis {
   height: auto;

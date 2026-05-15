@@ -239,7 +239,7 @@ const Gallery = () => {
         }}
       >
         <div className="sticky top-0 w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden">
-          {/* Decorative amber blobs — Framer Motion compositor-threaded x/y */}
+          {/* Decorative amber blobs */}
           <motion.div
             animate={{ x: [0, 28, 0], y: [0, -18, 0] }}
             transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}

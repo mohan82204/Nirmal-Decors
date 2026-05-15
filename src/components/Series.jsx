@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useInView, useMotionValue, useScroll, useTransform } from 'framer-motion';
+import ReactLenis from 'lenis/react';
 import {
   CutoutCard,
   CutoutCardMedia,
@@ -54,38 +55,6 @@ const seriesCards = [
   },
 ];
 
-/**
- * FixedParallaxBackground — Framer Motion implementation of background-attachment: fixed.
- * The background div translates opposite to the section scroll using useScroll+useTransform,
- * so it appears pinned to the viewport while content scrolls over it.
- * Uses GPU-composited `y` transform — zero JS on every frame via Framer's CSS-var pipeline.
- */
-const FixedParallaxBackground = ({ imageUrl, overlay = 'rgba(0,0,0,0.75), rgba(0,0,0,0.90)' }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ['start end', 'end start'],
-  });
-  // Counter-translate: moves 30% of the section height — looks "fixed" to the eye
-  const y = useTransform(scrollYProgress, [0, 1], ['-15%', '15%']);
-
-  return (
-    <div ref={ref} className="absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
-      <motion.div
-        style={{
-          y,
-          position: 'absolute',
-          inset: '-20% 0',  // oversized so counter-translate never reveals edges
-          backgroundImage: `linear-gradient(${overlay}), url("${imageUrl}")`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          willChange: 'transform',
-        }}
-      />
-    </div>
-  );
-};
-
 // Skiper34 sticky scale+rotate scroll effect applied to each card
 const SeriesCard = ({ card, index }) => {
   const vertMargin = 10;
@@ -105,18 +74,14 @@ const SeriesCard = ({ card, index }) => {
     once: true,
   });
 
-  // Properly unsubscribed listener — no memory leak
-  useEffect(() => {
-    const unsubscribe = scrollY.on('change', (y) => {
-      let animationValue = 1;
-      if (y > maxScrollY) {
-        animationValue = Math.max(0, 1 - (y - maxScrollY) / 10000);
-      }
-      scale.set(animationValue);
-      filter.set((1 - animationValue) * 100);
-    });
-    return unsubscribe;
-  }, [scrollY, maxScrollY, scale, filter]);
+  scrollY.on('change', (y) => {
+    let animationValue = 1;
+    if (y > maxScrollY) {
+      animationValue = Math.max(0, 1 - (y - maxScrollY) / 10000);
+    }
+    scale.set(animationValue);
+    filter.set((1 - animationValue) * 100);
+  });
 
   useEffect(() => {
     if (isInView) setMaxScrollY(scrollY.get());
@@ -197,13 +162,9 @@ const SeriesCard = ({ card, index }) => {
                 </div>
                 <span className="text-xs text-stone-500 tracking-wide font-light">Nirmal Decor</span>
               </div>
-              <motion.button
-                whileHover={{ scale: 1.05, borderColor: '#d4af37', color: '#d4af37' }}
-                whileTap={{ scale: 0.97 }}
-                className="rounded-full border border-stone-300 bg-stone-50 px-4 py-1.5 text-[11px] font-semibold tracking-[1.5px] uppercase text-stone-600"
-              >
+              <button className="rounded-full border border-stone-300 bg-stone-50 hover:bg-stone-100 px-4 py-1.5 text-[11px] font-semibold tracking-[1.5px] uppercase text-stone-600 transition-all duration-300 hover:border-[#d4af37] hover:text-[#d4af37]">
                 Enquire
-              </motion.button>
+              </button>
             </motion.div>
           </motion.div>
         </CutoutCardContent>
@@ -213,74 +174,69 @@ const SeriesCard = ({ card, index }) => {
 };
 
 const Series = () => {
-  const sectionRef = useRef(null);
   const headingRef = useRef(null);
   const headingInView = useInView(headingRef, { once: true, margin: '-80px' });
 
   return (
-    <section
-      id="series"
-      ref={sectionRef}
-      className="relative py-24 md:py-32 px-4 sm:px-8 md:px-12 overflow-hidden"
-    >
-      {/* Framer Motion parallax background — appears fixed to the viewport */}
-      <FixedParallaxBackground
-        imageUrl="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40"
-        overlay="rgba(0,0,0,0.72), rgba(0,0,0,0.90)"
-      />
-
-      {/* Heading */}
-      <div ref={headingRef} className="relative z-10 text-center mb-12 md:mb-20 pt-[20vh]">
-        <motion.span
-          initial={{ opacity: 0, letterSpacing: '14px' }}
-          animate={headingInView ? { opacity: 1, letterSpacing: '5px' } : {}}
-          transition={{ duration: 1.2, ease: EASE }}
-          className="block uppercase text-[10px] sm:text-[11px] tracking-[5px] font-sans font-medium mb-4 text-white"
-        >
-          Curated Experiences
-        </motion.span>
-
-        <div className="overflow-hidden">
-          <motion.h2
-            initial={{ y: '110%' }}
-            animate={headingInView ? { y: '0%' } : {}}
-            transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-            className="font-serif text-[clamp(2.2rem,6vw,4rem)] font-light m-0 tracking-[-0.5px] text-white drop-shadow-xl"
+    <ReactLenis root>
+      <section
+        id="series"
+        className="relative py-24 md:py-32 px-4 sm:px-8 md:px-12 bg-cover bg-center bg-no-repeat bg-fixed"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40")',
+        }}
+      >
+        {/* Heading */}
+        <div ref={headingRef} className="text-center mb-12 md:mb-20 pt-[20vh]">
+          <motion.span
+            initial={{ opacity: 0, letterSpacing: '14px' }}
+            animate={headingInView ? { opacity: 1, letterSpacing: '5px' } : {}}
+            transition={{ duration: 1.2, ease: EASE }}
+            className="block uppercase text-[10px] sm:text-[11px] tracking-[5px] font-sans font-medium mb-4 text-white"
+            style={{ color: '#ffffff' }}
           >
-            Our Signature Series
-          </motion.h2>
+            Curated Experiences
+          </motion.span>
+
+          <div className="overflow-hidden">
+            <motion.h2
+              initial={{ y: '110%' }}
+              animate={headingInView ? { y: '0%' } : {}}
+              transition={{ duration: 1, ease: EASE, delay: 0.15 }}
+              className="font-serif text-[clamp(2.2rem,6vw,4rem)] font-light m-0 tracking-[-0.5px] text-white drop-shadow-xl"
+              style={{ color: '#ffffff' }}
+            >
+              Our Signature Series
+            </motion.h2>
+          </div>
+
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={headingInView ? { scaleX: 1 } : {}}
+            transition={{ duration: 1.1, ease: EASE, delay: 0.35 }}
+            className="w-[60px] h-[2px] bg-white mx-auto mt-6 origin-left"
+            style={{ backgroundColor: '#ffffff' }}
+          />
         </div>
 
-        <motion.div
-          initial={{ scaleX: 0 }}
-          animate={headingInView ? { scaleX: 1 } : {}}
-          transition={{ duration: 1.1, ease: EASE, delay: 0.35 }}
-          className="w-[60px] h-[2px] bg-white mx-auto mt-6 origin-left"
-        />
-      </div>
+        {/* Cards — single column layout */}
+        <div className="max-w-2xl mx-auto flex flex-col gap-[30vh] pb-[50vh]">
+          {seriesCards.map((card, i) => (
+            <SeriesCard key={card.id} card={card} index={i} />
+          ))}
+        </div>
 
-      {/* Cards — single column layout */}
-      <div className="relative z-10 max-w-2xl mx-auto flex flex-col gap-[30vh] pb-[50vh]">
-        {seriesCards.map((card, i) => (
-          <SeriesCard key={card.id} card={card} index={i} />
-        ))}
-      </div>
-
-      {/* Footer line */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-        className="relative z-10 mt-16 text-center flex items-center justify-center gap-4"
-      >
-        <div className="w-12 h-[0.5px] bg-[#d4af37]/50" />
-        <span className="font-sans text-[10px] tracking-[5px] uppercase text-[#d4af37] font-medium">
-          Luxury Redefined
-        </span>
-        <div className="w-12 h-[0.5px] bg-[#d4af37]/50" />
-      </motion.div>
-    </section>
+        {/* Footer line */}
+        <div className="mt-16 text-center flex items-center justify-center gap-4">
+          <div className="w-12 h-[0.5px] bg-[#d4af37]/50" />
+          <span className="font-sans text-[10px] tracking-[5px] uppercase text-[#d4af37] font-medium">
+            Luxury Redefined
+          </span>
+          <div className="w-12 h-[0.5px] bg-[#d4af37]/50" />
+        </div>
+      </section>
+    </ReactLenis>
   );
 };
 
