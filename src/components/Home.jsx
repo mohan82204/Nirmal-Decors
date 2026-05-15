@@ -324,8 +324,8 @@ const Home = ({ onBookClick }) => {
               className="absolute top-0 left-[10%] lg:left-[5%] right-0 h-[80%] lg:h-[78%] rounded-[2px] overflow-hidden shadow-[0_30px_60px_rgba(180,130,20,0.2)]"
             >
               <motion.img
-                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fm=webp&fit=crop&q=40"
-                srcSet="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&auto=format&fm=webp&fit=crop&q=40 400w, https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fm=webp&fit=crop&q=40 800w"
+                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop&q=60"
+                srcSet="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&auto=format&fit=crop&q=60 400w, https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop&q=60 800w"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 alt="Floral wedding decor"
                 width="800"
@@ -352,7 +352,7 @@ const Home = ({ onBookClick }) => {
               className="absolute bottom-0 left-0 w-[45%] lg:w-[42%] h-[45%] lg:h-[42%] rounded-[2px] overflow-hidden shadow-2xl border-[3px] border-white"
             >
               <img
-                src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&auto=format&fm=webp&fit=crop&q=40"
+                src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&auto=format&fit=crop&q=60"
                 alt="Golden reception"
                 width="400"
                 height="300"

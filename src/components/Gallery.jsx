@@ -12,16 +12,16 @@ const galleryItems = [
     id: 1,
     label: 'Floral Canopy',
     category: 'Floral Design',
-    img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fm=webp&fit=crop&q=40',
-    bg: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200&auto=format&fm=webp&fit=crop&q=40',
+    img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200&auto=format&fit=crop&q=40',
     desc: 'A breathtaking archway of fresh florals cascading in soft blush and ivory tones, setting an ethereal entrance for the most important walk of your life.',
   },
   {
     id: 2,
     label: 'Golden Reception',
     category: 'Table Setting',
-    img: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&auto=format&fm=webp&fit=crop&q=40',
-    bg: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&auto=format&fm=webp&fit=crop&q=40',
+    img: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&auto=format&fit=crop&q=40',
     desc: 'Opulent gold centrepieces, candlelight, and custom linens transform every table into a statement of elegance your guests will remember forever.',
   },
   {
@@ -258,43 +258,16 @@ const Gallery = () => {
               eyebrow="Visual Storytelling"
               title="The Exhibition"
             />
-            {isMobile ? (
-              <div className="flex flex-col gap-6 px-4">
-                {galleryItems.map((item) => (
-                  <motion.div
-                    key={item.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    onClick={() => setSelected(item)}
-                    className="relative aspect-[4/5] rounded-2xl overflow-hidden cursor-pointer"
-                  >
-                    <img
-                      src={item.img.replace('w=800', 'w=600')}
-                      alt={item.label}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
-                      <div>
-                        <p className="text-[#d4af37] text-[10px] tracking-[3px] uppercase font-bold mb-1">{item.category}</p>
-                        <h3 className="text-white font-serif text-2xl">{item.label}</h3>
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            ) : (
-              <div className="w-full h-full pt-10 sm:pt-20 relative z-0">
-                <CircularGallery
-                  items={circularGalleryData}
-                  radius={radius}
-                  autoRotateSpeed={0}
-                  rotation={rotation}
-                  onItemClick={(item) => setSelected(item.raw)}
-                />
-              </div>
-            )}
+          </div>
+
+          <div className="w-full h-full pt-10 sm:pt-20 relative z-0">
+              <CircularGallery
+                items={circularGalleryData}
+                radius={radius}
+                autoRotateSpeed={0}
+                rotation={rotation}
+                onItemClick={(item) => setSelected(item.raw)}
+              />
           </div>
         </div>
       </section>

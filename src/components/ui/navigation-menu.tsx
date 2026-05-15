@@ -37,10 +37,7 @@ export function AnimatedNavFramer() {
   const lastScrollY = React.useRef(0);
   const scrollPositionOnCollapse = React.useRef(0);
 
-  // Optimization: only track scroll on desktop for the expand/collapse effect
   useMotionValueEvent(scrollY, 'change', (latest) => {
-    if (isMobile) return;
-    
     const previous = lastScrollY.current;
     if (isExpanded && latest > previous && latest > 150) {
       setExpanded(false);
