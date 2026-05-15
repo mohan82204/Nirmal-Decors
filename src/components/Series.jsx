@@ -55,118 +55,61 @@ const seriesCards = [
   },
 ];
 
-// Skiper34 sticky scale+rotate scroll effect applied to each card
 const SeriesCard = ({ card, index }) => {
-  const vertMargin = 10;
   const container = useRef(null);
-  const inView = useInView(container, { once: true, margin: '-60px' });
-  const stagger = useCutoutContentStaggerVariants();
-
-  const [maxScrollY, setMaxScrollY] = useState(Infinity);
-  const filter = useMotionValue(0);
-  const negateFilter = useTransform(filter, (value) => -value);
-
-  const { scrollY } = useScroll({ target: container });
-  const scale = useTransform(scrollY, [maxScrollY, maxScrollY + 10000], [1, 0]);
-
-  const isInView = useInView(container, {
-    margin: `0px 0px -${100 - vertMargin}% 0px`,
-    once: true,
+  const { scrollYProgress } = useScroll({
+    target: container,
+    offset: ['start start', 'end start']
   });
 
-  scrollY.on('change', (y) => {
-    let animationValue = 1;
-    if (y > maxScrollY) {
-      animationValue = Math.max(0, 1 - (y - maxScrollY) / 10000);
-    }
-    scale.set(animationValue);
-    filter.set((1 - animationValue) * 100);
-  });
-
-  useEffect(() => {
-    if (isInView) setMaxScrollY(scrollY.get());
-  }, [isInView]);
+  // Extremely smooth transforms for the stacking effect
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.85]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const rotate = useTransform(scrollYProgress, [0, 1], [0, index % 2 === 0 ? -2 : 2]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.1, 1.3]);
 
   return (
     <motion.div
       ref={container}
-      className="sticky w-full max-w-2xl mx-auto overflow-hidden rounded-[28px] bg-neutral-200"
+      className="sticky w-full max-w-2xl mx-auto overflow-hidden rounded-[28px]"
       style={{
-        scale: scale,
-        rotate: filter,
-        top: `${vertMargin}vh`,
+        scale,
+        opacity,
+        rotate,
+        top: `${10 + (index * 2)}vh`, // Staggered sticky tops for stacking
       }}
     >
-      <CutoutCard
-        className="group/cutout relative cursor-pointer overflow-hidden rounded-[28px] bg-white text-stone-900 border border-stone-200/60 shadow-[0px_4px_24px_rgba(0,0,0,0.25)] transition-shadow duration-500 hover:shadow-[0px_8px_40px_rgba(0,0,0,0.4)]"
-      >
-        {/* ── Media ── */}
-        <CutoutCardMedia className="h-[52vw] max-h-[420px] sm:h-[400px] md:h-[380px]">
-          {/* Counter-rotating image for parallax effect */}
+      <CutoutCard className="group/cutout relative cursor-pointer overflow-hidden rounded-[28px] bg-white text-stone-900 border border-stone-200/60 shadow-[0px_10px_50px_rgba(0,0,0,0.2)]">
+        <CutoutCardMedia className="h-[60vw] max-h-[460px] sm:h-[400px]">
           <motion.img
             src={card.image}
-            srcSet={`${card.image.replace('w=800', 'w=400')} 400w, ${card.image} 800w`}
-            sizes="(max-width: 768px) 100vw, 800px"
             alt={card.title}
-            width="800"
-            height="500"
-            style={{ rotate: negateFilter }}
-            className="h-full w-full scale-125 object-cover transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/cutout:scale-150"
+            style={{ scale: imageScale }}
+            className="h-full w-full object-cover transition-transform duration-500"
             loading="lazy"
           />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-
-          {/* Tag label — bottom-left */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          
           <CutoutCardInsetLabel className="bottom-0 left-0 rounded-tr-[20px] bg-white px-4 py-2">
-            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[3px] text-stone-500">
-              {card.tag}
-            </span>
+            <span className="text-[10px] font-bold uppercase tracking-[3px] text-stone-500">{card.tag}</span>
             <CutoutCorner className="absolute -right-[31px] -bottom-px rotate-90 text-white" size={32} />
             <CutoutCorner className="absolute -top-[31px] -left-px rotate-90 text-white" size={32} />
           </CutoutCardInsetLabel>
 
-          {/* Series number pin — top-right */}
           <CutoutCardPin className="top-0 right-0 rounded-bl-[20px] bg-white px-4 py-2">
-            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[3px] text-stone-600">
-              0{index + 1}
-            </span>
+            <span className="text-[10px] font-bold uppercase tracking-[3px] text-stone-600">0{index + 1}</span>
             <CutoutCorner className="absolute -left-[31px] -top-px rotate-[270deg] text-white" size={32} />
             <CutoutCorner className="absolute -bottom-[31px] -right-px rotate-[270deg] text-white" size={32} />
           </CutoutCardPin>
         </CutoutCardMedia>
 
-        {/* ── Content ── */}
-        <CutoutCardContent className="px-5 pt-5 pb-5">
-          <motion.div
-            variants={stagger.container}
-            initial="hidden"
-            animate={inView ? 'show' : 'hidden'}
-          >
-            <motion.h3
-              variants={stagger.item}
-              className="font-serif text-xl sm:text-2xl font-semibold text-stone-900 mb-2 tracking-tight leading-snug"
-            >
-              {card.title}
-            </motion.h3>
-            <motion.p
-              variants={stagger.item}
-              className="text-stone-500 text-xs sm:text-sm font-light leading-relaxed mb-5"
-            >
-              {card.description}
-            </motion.p>
-            <motion.div variants={stagger.item} className="w-full h-px bg-stone-200 mb-4" />
-            <motion.div variants={stagger.item} className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#d4af37] to-[#fbbf24] flex items-center justify-center shadow-md">
-                  <span className="text-[9px] font-bold text-black">{index + 1}</span>
-                </div>
-                <span className="text-xs text-stone-500 tracking-wide font-light">Nirmal Decor</span>
-              </div>
-              <button className="rounded-full border border-stone-300 bg-stone-50 hover:bg-stone-100 px-4 py-1.5 text-[11px] font-semibold tracking-[1.5px] uppercase text-stone-600 transition-all duration-300 hover:border-[#d4af37] hover:text-[#d4af37]">
-                Enquire
-              </button>
-            </motion.div>
-          </motion.div>
+        <CutoutCardContent className="px-6 py-6">
+          <h3 className="font-serif text-2xl font-light text-stone-900 mb-3 tracking-tight">{card.title}</h3>
+          <p className="text-stone-500 text-sm font-light leading-relaxed mb-6">{card.description}</p>
+          <div className="flex items-center justify-between pt-4 border-t border-stone-100">
+            <span className="text-xs text-stone-400 tracking-widest uppercase">Signature Collection</span>
+            <button className="text-[11px] font-bold tracking-[2px] uppercase text-[#d4af37] hover:opacity-70 transition-opacity">Explore Details</button>
+          </div>
         </CutoutCardContent>
       </CutoutCard>
     </motion.div>
@@ -174,66 +117,61 @@ const SeriesCard = ({ card, index }) => {
 };
 
 const Series = () => {
-  const headingRef = useRef(null);
-  const headingInView = useInView(headingRef, { once: true, margin: '-80px' });
-
+  const containerRef = useRef(null);
+  
   return (
     <ReactLenis root>
       <section
         id="series"
-        className="relative py-24 md:py-32 px-4 sm:px-8 md:px-12 bg-cover bg-center bg-no-repeat bg-fixed"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40")',
-        }}
+        ref={containerRef}
+        className="relative w-full min-h-[300vh] overflow-visible pb-[20vh]"
       >
-        {/* Heading */}
-        <div ref={headingRef} className="text-center mb-12 md:mb-20 pt-[20vh]">
-          <motion.span
-            initial={{ opacity: 0, letterSpacing: '14px' }}
-            animate={headingInView ? { opacity: 1, letterSpacing: '5px' } : {}}
-            transition={{ duration: 1.2, ease: EASE }}
-            className="block uppercase text-[10px] sm:text-[11px] tracking-[5px] font-sans font-medium mb-4 text-white"
-            style={{ color: '#ffffff' }}
-          >
-            Curated Experiences
-          </motion.span>
+        {/* Modern Sticky Background strategy — works perfectly on mobile */}
+        <div className="sticky top-0 left-0 w-full h-[100vh] z-0 overflow-hidden">
+          <div 
+            className="absolute inset-0 w-full h-full bg-cover bg-center"
+            style={{
+              backgroundImage: 'linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.85)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1600&auto=format&fit=crop&q=40")',
+            }}
+          />
+          <div className="absolute inset-0 bg-black/20" />
+        </div>
 
-          <div className="overflow-hidden">
-            <motion.h2
-              initial={{ y: '110%' }}
-              animate={headingInView ? { y: '0%' } : {}}
-              transition={{ duration: 1, ease: EASE, delay: 0.15 }}
-              className="font-serif text-[clamp(2.2rem,6vw,4rem)] font-light m-0 tracking-[-0.5px] text-white drop-shadow-xl"
-              style={{ color: '#ffffff' }}
+        <div className="relative z-10 -mt-[100vh]">
+          {/* Heading */}
+          <div className="text-center pt-[20vh] mb-[10vh]">
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              className="block uppercase text-[11px] tracking-[8px] text-white/60 mb-4 font-sans"
             >
-              Our Signature Series
+              Curated Experiences
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              className="font-serif text-[clamp(2.5rem,8vw,5rem)] font-light text-white m-0"
+            >
+              The Signature Series
             </motion.h2>
+            <div className="w-16 h-px bg-[#d4af37] mx-auto mt-8" />
           </div>
 
-          <motion.div
-            initial={{ scaleX: 0 }}
-            animate={headingInView ? { scaleX: 1 } : {}}
-            transition={{ duration: 1.1, ease: EASE, delay: 0.35 }}
-            className="w-[60px] h-[2px] bg-white mx-auto mt-6 origin-left"
-            style={{ backgroundColor: '#ffffff' }}
-          />
-        </div>
+          {/* Cards Stack */}
+          <div className="max-w-2xl mx-auto px-4 flex flex-col gap-[40vh] mb-[20vh]">
+            {seriesCards.map((card, i) => (
+              <SeriesCard key={card.id} card={card} index={i} />
+            ))}
+          </div>
 
-        {/* Cards — single column layout */}
-        <div className="max-w-2xl mx-auto flex flex-col gap-[30vh] pb-[50vh]">
-          {seriesCards.map((card, i) => (
-            <SeriesCard key={card.id} card={card} index={i} />
-          ))}
-        </div>
-
-        {/* Footer line */}
-        <div className="mt-16 text-center flex items-center justify-center gap-4">
-          <div className="w-12 h-[0.5px] bg-[#d4af37]/50" />
-          <span className="font-sans text-[10px] tracking-[5px] uppercase text-[#d4af37] font-medium">
-            Luxury Redefined
-          </span>
-          <div className="w-12 h-[0.5px] bg-[#d4af37]/50" />
+          {/* Brand Footer */}
+          <div className="text-center py-20">
+            <div className="flex items-center justify-center gap-6 opacity-30">
+              <div className="w-12 h-px bg-white" />
+              <span className="text-white text-[10px] tracking-[6px] uppercase font-light">Luxury Redefined</span>
+              <div className="w-12 h-px bg-white" />
+            </div>
+          </div>
         </div>
       </section>
     </ReactLenis>
