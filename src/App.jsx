@@ -3,6 +3,8 @@ import './App.css';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 
+import { domAnimation, LazyMotion } from 'framer-motion';
+
 // Lazy load components for performance
 const Series = lazy(() => import('./components/Series'));
 const Gallery = lazy(() => import('./components/Gallery'));
@@ -20,24 +22,37 @@ function App() {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
   return (
-    <div className="app-container">
-      <Navbar />
-      <main>
-        <Home onBookClick={() => setIsModalOpen(true)} />
-        <Suspense fallback={<LoadingFallback />}>
-          <Series />
-          <Gallery />
-          <Reviews />
-          <Contact onBookClick={() => setIsModalOpen(true)} />
+    <LazyMotion features={domAnimation} strict>
+      <div className="app-container">
+        <Navbar />
+        <main>
+          <Home onBookClick={() => setIsModalOpen(true)} />
+          
+          <Suspense fallback={<LoadingFallback />}>
+            <Series />
+          </Suspense>
+          
+          <Suspense fallback={<LoadingFallback />}>
+            <Gallery />
+          </Suspense>
+          
+          <Suspense fallback={<LoadingFallback />}>
+            <Reviews />
+          </Suspense>
+          
+          <Suspense fallback={<LoadingFallback />}>
+            <Contact onBookClick={() => setIsModalOpen(true)} />
+          </Suspense>
+        </main>
+        
+        <Suspense fallback={null}>
+          <BookingModal 
+            isOpen={isModalOpen} 
+            onClose={() => setIsModalOpen(false)} 
+          />
         </Suspense>
-      </main>
-      <Suspense fallback={null}>
-        <BookingModal 
-          isOpen={isModalOpen} 
-          onClose={() => setIsModalOpen(false)} 
-        />
-      </Suspense>
-    </div>
+      </div>
+    </LazyMotion>
   );
 }
 
