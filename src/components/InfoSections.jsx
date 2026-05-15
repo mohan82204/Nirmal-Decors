@@ -1,10 +1,38 @@
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'framer-motion';
 import { TestimonialsVariant } from './ui/demo';
 import { BorderRotate } from './ui/animated-gradient-border';
 
 const EASE = [0.76, 0, 0.24, 1];
 const SPRING = { type: 'spring', stiffness: 260, damping: 22 };
+
+/**
+ * FixedParallaxBackground — GPU-composited Framer Motion equivalent of background-attachment:fixed.
+ * Translates the bg div opposite to scroll, so it appears pinned to the viewport.
+ */
+const FixedParallaxBackground = ({ imageUrl, overlay }) => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start end', 'end start'],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ['-15%', '15%']);
+  return (
+    <div ref={ref} className="absolute inset-0 overflow-hidden" style={{ zIndex: 0 }}>
+      <motion.div
+        style={{
+          y,
+          position: 'absolute',
+          inset: '-20% 0',
+          backgroundImage: `linear-gradient(${overlay}), url("${imageUrl}")`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          willChange: 'transform',
+        }}
+      />
+    </div>
+  );
+};
 
 const TESTIMONIALS = [
   {
@@ -192,21 +220,26 @@ const SocialIcon = ({ icon: Icon, link, delay }) => {
 
 /* ── Reviews ── */
 export const Reviews = () => {
+  const sectionRef = useRef(null);
   return (
     <section
       id="reviews"
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-24 pb-20 md:pt-32 md:pb-24 bg-cover bg-center bg-no-repeat"
-      style={{
-        backgroundImage: 'linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.70)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40")',
-      }}
+      ref={sectionRef}
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-24 pb-20 md:pt-32 md:pb-24 overflow-hidden"
     >
-      {/* Static gold radial overlay — no infinite animation */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.10) 0%, transparent 65%)' }}
+      {/* Framer Motion parallax background — appears fixed to viewport */}
+      <FixedParallaxBackground
+        imageUrl="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40"
+        overlay="rgba(0,0,0,0.52), rgba(0,0,0,0.68)"
       />
 
-      <div className="container max-w-[1200px] mx-auto text-center relative z-[1] px-6">
+      {/* Gold radial overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none z-[1]"
+        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.12) 0%, transparent 65%)' }}
+      />
+
+      <div className="container max-w-[1200px] mx-auto text-center relative z-[2] px-6">
         <SectionHeading
           eyebrow="Testimonials"
           title="Client Love"
@@ -235,20 +268,20 @@ export const Contact = ({ onBookClick }) => {
 
   return (
     <section id="contact" className="relative min-h-[100dvh] flex flex-col justify-center pt-24 pb-12 md:pt-32 md:pb-16 overflow-hidden bg-[#fffbf5]">
-      {/* Static background — no infinite animation for performance */}
+      {/* Background */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div
           className="absolute inset-0 opacity-60"
           style={{ background: 'radial-gradient(at 30% 40%, #fffbf5 0%, #fff7ed 50%, #fef3c7 100%)' }}
         />
-        
-        {/* Background text — CSS animation via keyframes */}
-        <div
+        {/* Framer Motion marquee text */}
+        <motion.div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-black text-[#d4af37]/[0.03] whitespace-nowrap font-serif z-[-1] pointer-events-none select-none"
-          style={{ animation: 'marqueeText 30s linear infinite' }}
+          animate={{ x: ['-20%', '0%', '-20%'] }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
         >
           NIRMAL DECOR
-        </div>
+        </motion.div>
       </div>
 
       <div className="container max-w-[1200px] mx-auto px-6 relative z-[1]">

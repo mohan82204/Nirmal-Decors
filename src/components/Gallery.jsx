@@ -239,20 +239,18 @@ const Gallery = () => {
         }}
       >
         <div className="sticky top-0 w-full h-[100dvh] flex flex-col items-center justify-center overflow-hidden">
-          {/* Decorative amber blobs — CSS animations for compositor-thread performance */}
-          <div
+          {/* Decorative amber blobs — Framer Motion compositor-threaded x/y */}
+          <motion.div
+            animate={{ x: [0, 28, 0], y: [0, -18, 0] }}
+            transition={{ duration: 14, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute top-[-8%] right-[-4%] w-[300px] sm:w-[480px] h-[300px] sm:h-[480px] z-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(251,191,36,0.14) 0%, transparent 70%)',
-              animation: 'blobDrift1 14s ease-in-out infinite',
-            }}
+            style={{ background: 'radial-gradient(circle, rgba(251,191,36,0.14) 0%, transparent 70%)' }}
           />
-          <div
+          <motion.div
+            animate={{ x: [0, -18, 0], y: [0, 24, 0] }}
+            transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
             className="absolute bottom-[-10%] left-[-4%] w-[350px] sm:w-[550px] h-[350px] sm:h-[550px] z-0 pointer-events-none"
-            style={{
-              background: 'radial-gradient(circle, rgba(249,168,212,0.1) 0%, transparent 70%)',
-              animation: 'blobDrift2 18s ease-in-out infinite',
-            }}
+            style={{ background: 'radial-gradient(circle, rgba(249,168,212,0.1) 0%, transparent 70%)' }}
           />
 
           <div className="w-full max-w-[1400px] px-[6%] z-10 absolute top-12 sm:top-16">
