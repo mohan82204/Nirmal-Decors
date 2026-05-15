@@ -135,6 +135,35 @@
   }
 }
 
+/* Shimmer bar CSS animation — avoids JS/Framer for this decorative element */
+@keyframes shimmerIn {
+  from { transform: scaleX(0); transform-origin: left; }
+  to   { transform: scaleX(1); transform-origin: left; }
+}
+
+/* Contact section watermark marquee */
+@keyframes marqueeText {
+  0%   { transform: translate(-50%, -50%) translateX(-20%); }
+  50%  { transform: translate(-50%, -50%) translateX(0%); }
+  100% { transform: translate(-50%, -50%) translateX(-20%); }
+}
+
+/* GPU-composited blob drifts (replace Framer infinite x/y) */
+@keyframes blobDrift1 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(28px, -18px); }
+}
+@keyframes blobDrift2 {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-18px, 24px); }
+}
+
+/* Off-screen sections: defer paint & layout */
+section:not(#home) {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 600px;
+}
+
 /* Custom Scrollbar for Lenis */
 html.lenis {
   height: auto;

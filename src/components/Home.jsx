@@ -1,8 +1,9 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, lazy, Suspense } from 'react';
 import { motion, useAnimation, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 
 const EASE = [0.76, 0, 0.24, 1];
-import { FlowerFall } from './ui/flower-fall';
+// Lazy-load the FlowerFall — it's purely decorative and not needed for FCP/LCP
+const FlowerFall = lazy(() => import('./ui/flower-fall').then(m => ({ default: m.FlowerFall })));
 
 const WORDS = ['ELEGANCE', 'TIMELESS', 'BEAUTY'];
 
@@ -18,10 +19,10 @@ const WordCycler = () => {
       <AnimatePresence mode="wait">
         <motion.span
           key={WORDS[index]}
-          initial={{ y: 60, opacity: 0 }}
+          initial={{ y: 40, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          exit={{ y: -60, opacity: 0 }}
-          transition={{ duration: 0.8, ease: EASE }}
+          exit={{ y: -40, opacity: 0 }}
+          transition={{ duration: 0.6, ease: EASE }}
           style={{
             display: 'inline-block',
             background: 'linear-gradient(to bottom right, #334155 0%, #94a3b8 50%, #334155 100%)',
@@ -30,6 +31,7 @@ const WordCycler = () => {
             fontStyle: 'italic',
             fontWeight: 400,
             padding: '0 0.2ch',
+            willChange: 'transform, opacity',
           }}
         >
           {WORDS[index]}
@@ -39,12 +41,9 @@ const WordCycler = () => {
   );
 };
 
-/* ── Decorative diagonal band ── */
+/* ── Decorative diagonal band — CSS-only (no JS animation) ── */
 const DiagonalBand = () => (
-  <motion.div
-    initial={{ scaleX: 0 }}
-    animate={{ scaleX: 1 }}
-    transition={{ duration: 1.4, ease: EASE, delay: 0.6 }}
+  <div
     style={{
       position: 'absolute',
       top: 0,
@@ -55,7 +54,6 @@ const DiagonalBand = () => (
       clipPath: 'polygon(20% 0, 100% 0, 100% 100%, 0% 100%)',
       zIndex: 0,
       opacity: 0.55,
-      transformOrigin: 'right',
     }}
   />
 );
@@ -66,16 +64,18 @@ const StatPill = ({ value, label, delay }) => {
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.7, ease: EASE, delay }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: EASE, delay }}
       style={{
         textAlign: 'center',
-        padding: '20px 28px',
+        padding: '16px 24px',
         background: 'rgba(255,255,255,0.65)',
         backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         border: '0.5px solid rgba(212,175,55,0.3)',
         borderRadius: '2px',
+        willChange: 'transform, opacity',
       }}
     >
       <div
@@ -110,24 +110,29 @@ const Home = ({ onBookClick }) => {
   const controls = useAnimation();
   const containerRef = useRef(null);
   const { scrollYProgress } = useScroll({ target: containerRef, offset: ['start start', 'end start'] });
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-  const heroY = useTransform(scrollYProgress, [0, 0.6], [0, -60]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const heroY = useTransform(scrollYProgress, [0, 0.5], ['0px', '-40px']);
 
+  // Only show flowers after the page has painted (improves FCP)
+  const [showFlowers, setShowFlowers] = useState(false);
   useEffect(() => {
+    const id = requestIdleCallback
+      ? requestIdleCallback(() => setShowFlowers(true), { timeout: 2000 })
+      : setTimeout(() => setShowFlowers(true), 1500);
     controls.start('visible');
+    return () => {
+      if (requestIdleCallback) cancelIdleCallback(id);
+      else clearTimeout(id);
+    };
   }, [controls]);
 
   const stagger = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.18, delayChildren: 0.3 } },
+    visible: { transition: { staggerChildren: 0.14, delayChildren: 0.2 } },
   };
   const fadeUp = {
-    hidden: { y: 50, opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 1, ease: EASE } },
-  };
-  const slideIn = {
-    hidden: { x: -40, opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1, ease: EASE } },
+    hidden: { y: 30, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { duration: 0.7, ease: EASE } },
   };
 
   return (
@@ -139,7 +144,6 @@ const Home = ({ onBookClick }) => {
         width: '100%',
         minHeight: '100dvh',
         overflow: 'hidden',
-        /* Bright warm gradient background */
         background: 'linear-gradient(135deg, #fff7ed 0%, #fef3c7 30%, #fde68a 60%, #fef9c3 100%)',
         display: 'flex',
         flexDirection: 'column',
@@ -147,30 +151,30 @@ const Home = ({ onBookClick }) => {
         alignItems: 'center',
       }}
     >
-      {/* ── Background layers ── */}
-      {/* Left soft rose wash */}
+      {/* Background gradient layer — static, no JS */}
       <div
         style={{
           position: 'absolute',
           inset: 0,
           background:
-            'radial-gradient(ellipse at 15% 60%, rgba(249,168,212,0.35) 0%, transparent 55%), radial-gradient(ellipse at 80% 20%, rgba(253,230,138,0.4) 0%, transparent 50%)',
+            'radial-gradient(ellipse at 15% 60%, rgba(249,168,212,0.3) 0%, transparent 55%), radial-gradient(ellipse at 80% 20%, rgba(253,230,138,0.35) 0%, transparent 50%)',
           zIndex: 0,
           pointerEvents: 'none',
         }}
       />
 
-      {/* Diagonal accent */}
+      {/* Diagonal accent — CSS only, no Framer animation on initial render */}
       <DiagonalBand />
 
-      {/* Falling Flowers */}
-      <FlowerFall count={window.innerWidth < 768 ? 8 : 15} />
+      {/* Falling Flowers — lazy loaded after idle */}
+      {showFlowers && (
+        <Suspense fallback={null}>
+          <FlowerFall count={window.innerWidth < 768 ? 6 : 12} />
+        </Suspense>
+      )}
 
-      {/* Gold top shimmer bar */}
-      <motion.div
-        initial={{ scaleX: 0 }}
-        animate={{ scaleX: 1 }}
-        transition={{ duration: 1.6, ease: EASE }}
+      {/* Gold top shimmer bar — CSS animation instead of Framer */}
+      <div
         style={{
           position: 'absolute',
           top: 0,
@@ -178,8 +182,8 @@ const Home = ({ onBookClick }) => {
           width: '100%',
           height: '3px',
           background: 'linear-gradient(90deg, transparent, #d4af37, #fbbf24, #d4af37, transparent)',
-          transformOrigin: 'left',
           zIndex: 10,
+          animation: 'shimmerIn 1.4s ease forwards',
         }}
       />
 
@@ -215,7 +219,7 @@ const Home = ({ onBookClick }) => {
               <h1
                 style={{
                   fontFamily: "'Cormorant Garamond', serif",
-                  fontSize: 'clamp(3rem, 5.5vw, 5.5rem)',
+                  fontSize: 'clamp(2.8rem, 5.5vw, 5.5rem)',
                   fontWeight: 300,
                   color: '#1a1208',
                   lineHeight: 1.1,
@@ -243,13 +247,13 @@ const Home = ({ onBookClick }) => {
             <motion.div
               variants={{
                 hidden: { scaleX: 0 },
-                visible: { scaleX: 1, transition: { duration: 1.2, ease: EASE } },
+                visible: { scaleX: 1, transition: { duration: 0.9, ease: EASE } },
               }}
               style={{
                 width: '80px',
                 height: '1px',
                 background: 'linear-gradient(90deg, #d4af37, #fbbf24)',
-                margin: '28px 0',
+                margin: '24px 0',
                 transformOrigin: 'left',
               }}
             />
@@ -259,12 +263,12 @@ const Home = ({ onBookClick }) => {
               variants={fadeUp}
               style={{
                 fontFamily: "'Inter', sans-serif",
-                fontSize: '16px',
+                fontSize: '15px',
                 fontWeight: 300,
                 color: '#5c4a1e',
-                lineHeight: 1.85,
+                lineHeight: 1.8,
                 maxWidth: '460px',
-                margin: '0 0 48px',
+                margin: '0 0 40px',
               }}
             >
               We craft bespoke wedding experiences — from grand mandap structures to intimate floral
@@ -278,11 +282,10 @@ const Home = ({ onBookClick }) => {
             >
               <motion.a
                 href="#gallery"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="text-white bg-gradient-to-br from-[#d4af37] to-[#fbbf24] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.7)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] dark:before:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.5)_50%,transparent_75%,transparent_100%)] cursor-pointer shadow-lg"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
                 style={{
-                  padding: '18px 44px',
+                  padding: '16px 40px',
                   fontFamily: "'Inter', sans-serif",
                   fontSize: '12px',
                   fontWeight: 700,
@@ -291,6 +294,10 @@ const Home = ({ onBookClick }) => {
                   textDecoration: 'none',
                   borderRadius: '1px',
                   display: 'inline-block',
+                  color: '#fff',
+                  background: 'linear-gradient(135deg, #d4af37, #fbbf24)',
+                  boxShadow: '0 8px 24px rgba(212,175,55,0.3)',
+                  willChange: 'transform',
                 }}
               >
                 View Gallery
@@ -298,57 +305,56 @@ const Home = ({ onBookClick }) => {
 
               <motion.button
                 onClick={onBookClick}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="min-w-[160px] sm:min-w-[200px] text-[#b45309] border-[1.5px] border-[#d4af37] relative overflow-hidden before:absolute before:inset-0 before:rounded-[inherit] before:bg-[linear-gradient(45deg,transparent_25%,rgba(212,175,55,0.4)_50%,transparent_75%,transparent_100%)] before:bg-[length:250%_250%,100%_100%] before:bg-[position:200%_0,0_0] before:bg-no-repeat before:transition-[background-position_0s_ease] before:duration-1000 hover:before:bg-[position:-100%_0,0_0] cursor-pointer px-8 sm:px-11 py-4 sm:py-[18px] font-sans text-[11px] sm:text-[12px] font-bold tracking-[3px] uppercase rounded-[1px] text-center"
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                style={{
+                  padding: '16px 40px',
+                  fontFamily: "'Inter', sans-serif",
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  letterSpacing: '3px',
+                  textTransform: 'uppercase',
+                  background: 'transparent',
+                  color: '#b45309',
+                  border: '1.5px solid #d4af37',
+                  borderRadius: '1px',
+                  cursor: 'pointer',
+                  willChange: 'transform',
+                }}
               >
                 Book Now
               </motion.button>
             </motion.div>
           </motion.div>
 
-          {/* RIGHT — Image collage */}
+          {/* RIGHT — Image collage — removed infinite y animation (main TBT source) */}
           <motion.div
-            initial={{ opacity: 0, x: 60 }}
-            animate={{ opacity: 1, x: 0, y: [0, -15, 0] }}
-            transition={{
-              opacity: { duration: 1.2, ease: EASE, delay: 0.5 },
-              x: { duration: 1.2, ease: EASE, delay: 0.5 },
-              y: { duration: 5, repeat: Infinity, ease: 'easeInOut' }
-            }}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, ease: EASE, delay: 0.4 }}
             className="relative h-[400px] sm:h-[500px] lg:h-[560px] order-1 lg:order-2"
           >
             {/* Main image */}
-            <motion.div
-              whileHover={{ scale: 1.02 }}
-              className="absolute top-0 left-[10%] lg:left-[5%] right-0 h-[80%] lg:h-[78%] rounded-[2px] overflow-hidden shadow-[0_30px_60px_rgba(180,130,20,0.2)]"
-            >
-              <motion.img
+            <div className="absolute top-0 left-[10%] lg:left-[5%] right-0 h-[80%] lg:h-[78%] rounded-[2px] overflow-hidden shadow-[0_30px_60px_rgba(180,130,20,0.2)]">
+              <img
                 src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop&q=60"
                 srcSet="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&auto=format&fit=crop&q=60 400w, https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop&q=60 800w"
                 sizes="(max-width: 768px) 100vw, 50vw"
                 alt="Floral wedding decor"
                 width="800"
-                height="600"
-                initial={{ scale: 1.1 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 1.6, ease: EASE, delay: 0.6 }}
+                height="533"
                 className="w-full h-full object-cover"
                 fetchPriority="high"
-                decoding="sync"
+                decoding="async"
               />
               <div className="absolute inset-0 border-[0.5px] border-[#d4af37]/50 rounded-[2px] pointer-events-none" />
-            </motion.div>
+            </div>
 
-            {/* Floating small image */}
+            {/* Floating small image — removed infinite animation */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: [0, 10, 0] }}
-              transition={{
-                opacity: { duration: 1, ease: EASE, delay: 1 },
-                y: { duration: 4, repeat: Infinity, ease: 'easeInOut', delay: 1 }
-              }}
-              whileHover={{ y: -6 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: EASE, delay: 0.8 }}
               className="absolute bottom-0 left-0 w-[45%] lg:w-[42%] h-[45%] lg:h-[42%] rounded-[2px] overflow-hidden shadow-2xl border-[3px] border-white"
             >
               <img
@@ -361,15 +367,11 @@ const Home = ({ onBookClick }) => {
               />
             </motion.div>
 
-            {/* Floating badge */}
+            {/* Floating badge — removed infinite scale pulse */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ opacity: 1, scale: [1, 1.08, 1] }}
-              transition={{
-                opacity: { duration: 0.8, ease: EASE, delay: 1.3 },
-                scale: { duration: 3, repeat: Infinity, ease: 'easeInOut' }
-              }}
-              whileHover={{ rotate: 10 }}
+              initial={{ opacity: 0, scale: 0.7 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.7, ease: EASE, delay: 1 }}
               className="absolute top-[10%] left-0 lg:left-[-6%] w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-[#d4af37] to-[#fbbf24] flex flex-col items-center justify-center shadow-[0_12px_30px_rgba(212,175,55,0.4)]"
             >
               <span className="font-serif text-2xl sm:text-[1.8rem] font-semibold text-white leading-none">10+</span>
@@ -380,15 +382,15 @@ const Home = ({ onBookClick }) => {
 
         {/* Stats row */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: EASE, delay: 1.1 }}
+          transition={{ duration: 0.8, ease: EASE, delay: 0.9 }}
           className="max-w-[1300px] mx-auto px-[6%] pb-20 flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-5"
         >
-          <StatPill value="500+" label="Weddings Styled" delay={1.2} />
-          <StatPill value="98%" label="Client Satisfaction" delay={1.35} />
-          <StatPill value="50+" label="Design Collections" delay={1.5} />
-          <StatPill value="10+" label="Years of Excellence" delay={1.65} />
+          <StatPill value="500+" label="Weddings Styled" delay={1.0} />
+          <StatPill value="98%" label="Client Satisfaction" delay={1.1} />
+          <StatPill value="50+" label="Design Collections" delay={1.2} />
+          <StatPill value="10+" label="Years of Excellence" delay={1.3} />
         </motion.div>
       </motion.div>
 
@@ -401,14 +403,11 @@ const Home = ({ onBookClick }) => {
       ].map((pos, i) => (
         <motion.div
           key={i}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 0.6, scale: 1 }}
-          transition={{ delay: 1.8, duration: 0.8 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.6 }}
+          transition={{ delay: 1.6, duration: 0.6 }}
           className="absolute w-10 h-10 border border-[#d4af37] z-10 pointer-events-none"
-          style={{
-            clipPath: pos.clip,
-            ...pos
-          }}
+          style={{ clipPath: pos.clip, ...pos }}
         />
       ))}
     </section>

@@ -195,17 +195,15 @@ export const Reviews = () => {
   return (
     <section
       id="reviews"
-      className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-24 pb-20 md:pt-32 md:pb-24 bg-cover bg-center bg-no-repeat bg-fixed"
+      className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-24 pb-20 md:pt-32 md:pb-24 bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.65)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40")',
+        backgroundImage: 'linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.70)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40")',
       }}
     >
-      {/* Animated gold gradient overlay */}
-      <motion.div
-        animate={{ opacity: [0.3, 0.5, 0.3] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+      {/* Static gold radial overlay — no infinite animation */}
+      <div
         className="absolute inset-0 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.12) 0%, transparent 65%)' }}
+        style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.10) 0%, transparent 65%)' }}
       />
 
       <div className="container max-w-[1200px] mx-auto text-center relative z-[1] px-6">
@@ -237,30 +235,20 @@ export const Contact = ({ onBookClick }) => {
 
   return (
     <section id="contact" className="relative min-h-[100dvh] flex flex-col justify-center pt-24 pb-12 md:pt-32 md:pb-16 overflow-hidden bg-[#fffbf5]">
-      {/* Animated Liquid Silk Background */}
+      {/* Static background — no infinite animation for performance */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <motion.div
-          animate={{ 
-            background: [
-              'radial-gradient(at 0% 0%, #fffbf5 0%, #fff7ed 50%, #fef3c7 100%)',
-              'radial-gradient(at 100% 0%, #fffbf5 0%, #fff7ed 50%, #fef3c7 100%)',
-              'radial-gradient(at 100% 100%, #fffbf5 0%, #fff7ed 50%, #fef3c7 100%)',
-              'radial-gradient(at 0% 100%, #fffbf5 0%, #fff7ed 50%, #fef3c7 100%)',
-              'radial-gradient(at 0% 0%, #fffbf5 0%, #fff7ed 50%, #fef3c7 100%)'
-            ]
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+        <div
           className="absolute inset-0 opacity-60"
+          style={{ background: 'radial-gradient(at 30% 40%, #fffbf5 0%, #fff7ed 50%, #fef3c7 100%)' }}
         />
         
-        {/* Large Parallax Background Text */}
-        <motion.div
+        {/* Background text — CSS animation via keyframes */}
+        <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[15vw] font-black text-[#d4af37]/[0.03] whitespace-nowrap font-serif z-[-1] pointer-events-none select-none"
-          animate={{ x: ['-20%', '0%', '-20%'] }}
-          transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
+          style={{ animation: 'marqueeText 30s linear infinite' }}
         >
           NIRMAL DECOR
-        </motion.div>
+        </div>
       </div>
 
       <div className="container max-w-[1200px] mx-auto px-6 relative z-[1]">

@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useInView, useMotionValue, useScroll, useTransform } from 'framer-motion';
-import ReactLenis from 'lenis/react';
 import {
   CutoutCard,
   CutoutCardMedia,
@@ -74,14 +73,18 @@ const SeriesCard = ({ card, index }) => {
     once: true,
   });
 
-  scrollY.on('change', (y) => {
-    let animationValue = 1;
-    if (y > maxScrollY) {
-      animationValue = Math.max(0, 1 - (y - maxScrollY) / 10000);
-    }
-    scale.set(animationValue);
-    filter.set((1 - animationValue) * 100);
-  });
+  // Fixed: properly unsubscribe from scrollY listener to prevent memory leaks
+  useEffect(() => {
+    const unsubscribe = scrollY.on('change', (y) => {
+      let animationValue = 1;
+      if (y > maxScrollY) {
+        animationValue = Math.max(0, 1 - (y - maxScrollY) / 10000);
+      }
+      scale.set(animationValue);
+      filter.set((1 - animationValue) * 100);
+    });
+    return unsubscribe;
+  }, [scrollY, maxScrollY, scale, filter]);
 
   useEffect(() => {
     if (isInView) setMaxScrollY(scrollY.get());
@@ -178,15 +181,14 @@ const Series = () => {
   const headingInView = useInView(headingRef, { once: true, margin: '-80px' });
 
   return (
-    <ReactLenis root>
-      <section
-        id="series"
-        className="relative py-24 md:py-32 px-4 sm:px-8 md:px-12 bg-cover bg-center bg-no-repeat bg-fixed"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40")',
-        }}
-      >
+    <section
+      id="series"
+      className="relative py-24 md:py-32 px-4 sm:px-8 md:px-12 bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage:
+          'linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.92)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40")',
+      }}
+    >
         {/* Heading */}
         <div ref={headingRef} className="text-center mb-12 md:mb-20 pt-[20vh]">
           <motion.span
@@ -236,7 +238,6 @@ const Series = () => {
           <div className="w-12 h-[0.5px] bg-[#d4af37]/50" />
         </div>
       </section>
-    </ReactLenis>
   );
 };
 
