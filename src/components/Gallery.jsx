@@ -62,7 +62,7 @@ const circularGalleryData = galleryItems.map(item => ({
   common: item.label,
   binomial: item.category,
   photo: {
-    url: item.img,
+    url: item.img.replace('w=800', 'w=400'),
     text: item.desc,
     by: 'Nirmal Decor'
   },
