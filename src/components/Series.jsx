@@ -23,35 +23,35 @@ const seriesCards = [
     title: 'Floral Ethereal',
     tag: 'Signature',
     description: 'Delicate blooms, soft candlelight, and cascading petals creating a dreamy, garden-paradise atmosphere.',
-    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1280&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop&q=60',
   },
   {
     id: 2,
     title: 'Royal Golden',
     tag: 'Premium',
     description: 'Opulent gold leaf accents, grand chandeliers, and majestic mandap structures fit for royalty.',
-    image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1280&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&auto=format&fit=crop&q=60',
   },
   {
     id: 3,
     title: 'Modern Minimal',
     tag: 'Contemporary',
     description: 'Clean architectural lines, monochromatic palettes, and sculptural florals for the contemporary couple.',
-    image: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1280&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&auto=format&fit=crop&q=60',
   },
   {
     id: 4,
     title: 'Mandap Heritage',
     tag: 'Traditional',
     description: 'Traditional sacred structures reimagined — hand-painted motifs and marigold arrangements celebrating culture.',
-    image: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1280&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800&auto=format&fit=crop&q=60',
   },
   {
     id: 5,
     title: 'Candlelit Intimate',
     tag: 'Intimate',
     description: 'Warm amber candlelight, lush greenery, and whisper-soft fabrics for an unforgettable micro-wedding.',
-    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1280&auto=format&fit=crop',
+    image: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop&q=60',
   },
 ];
 
@@ -105,9 +105,14 @@ const SeriesCard = ({ card, index }) => {
           {/* Counter-rotating image for parallax effect */}
           <motion.img
             src={card.image}
+            srcSet={`${card.image.replace('w=800', 'w=400')} 400w, ${card.image} 800w`}
+            sizes="(max-width: 768px) 100vw, 800px"
             alt={card.title}
+            width="800"
+            height="500"
             style={{ rotate: negateFilter }}
             className="h-full w-full scale-125 object-cover transition-transform duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] group-hover/cutout:scale-150"
+            loading="lazy"
           />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
 
@@ -179,7 +184,7 @@ const Series = () => {
         className="relative py-24 md:py-32 px-4 sm:px-8 md:px-12 bg-cover bg-center bg-no-repeat bg-fixed"
         style={{
           backgroundImage:
-            'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&auto=format&fit=crop&q=60")',
+            'linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.9)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40")',
         }}
       >
         {/* Heading */}

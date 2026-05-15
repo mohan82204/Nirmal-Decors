@@ -164,7 +164,7 @@ const Home = ({ onBookClick }) => {
       <DiagonalBand />
 
       {/* Falling Flowers */}
-      <FlowerFall count={15} />
+      <FlowerFall count={window.innerWidth < 768 ? 8 : 15} />
 
       {/* Gold top shimmer bar */}
       <motion.div
@@ -324,8 +324,12 @@ const Home = ({ onBookClick }) => {
               className="absolute top-0 left-[10%] lg:left-[5%] right-0 h-[80%] lg:h-[78%] rounded-[2px] overflow-hidden shadow-[0_30px_60px_rgba(180,130,20,0.2)]"
             >
               <motion.img
-                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=900&auto=format&fit=crop&q=60"
+                src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop&q=60"
+                srcSet="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=400&auto=format&fit=crop&q=60 400w, https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop&q=60 800w"
+                sizes="(max-width: 768px) 100vw, 50vw"
                 alt="Floral wedding decor"
+                width="800"
+                height="600"
                 initial={{ scale: 1.1 }}
                 animate={{ scale: 1 }}
                 transition={{ duration: 1.6, ease: EASE, delay: 0.6 }}
@@ -350,7 +354,10 @@ const Home = ({ onBookClick }) => {
               <img
                 src="https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=400&auto=format&fit=crop&q=60"
                 alt="Golden reception"
+                width="400"
+                height="300"
                 className="w-full h-full object-cover"
+                loading="lazy"
               />
             </motion.div>
 

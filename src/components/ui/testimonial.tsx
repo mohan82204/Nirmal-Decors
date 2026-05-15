@@ -126,7 +126,10 @@ const TestimonialCarousel = React.forwardRef<
                     <img
                       src={testimonial.avatar}
                       alt={testimonial.name}
+                      width="56"
+                      height="56"
                       className="w-14 h-14 rounded-full object-cover border border-[rgba(212,175,55,0.3)]"
+                      loading="lazy"
                     />
                     <div className="flex flex-col items-start">
                       <h3 className="text-lg font-serif text-[#d4af37]">

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useInView, useScroll, useTransform } from 'framer-motion';
 import { X } from 'lucide-react';
 import { CircularGallery } from '@/components/ui/circular-gallery';
 import ScrollExpandMedia from '@/components/ui/scroll-expansion-hero';
@@ -12,48 +12,48 @@ const galleryItems = [
     id: 1,
     label: 'Floral Canopy',
     category: 'Floral Design',
-    img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1280&auto=format&fit=crop&q=60',
-    bg: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1920&auto=format&fit=crop&q=60',
+    img: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1200&auto=format&fit=crop&q=40',
     desc: 'A breathtaking archway of fresh florals cascading in soft blush and ivory tones, setting an ethereal entrance for the most important walk of your life.',
   },
   {
     id: 2,
     label: 'Golden Reception',
     category: 'Table Setting',
-    img: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1280&auto=format&fit=crop&q=60',
-    bg: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1920&auto=format&fit=crop&q=60',
+    img: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1200&auto=format&fit=crop&q=40',
     desc: 'Opulent gold centrepieces, candlelight, and custom linens transform every table into a statement of elegance your guests will remember forever.',
   },
   {
     id: 3,
     label: 'Ceremony Arch',
     category: 'Wedding Decor',
-    img: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1280&auto=format&fit=crop&q=60',
-    bg: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1920&auto=format&fit=crop&q=60',
+    img: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=800&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=1200&auto=format&fit=crop&q=40',
     desc: 'Handcrafted ceremony arches entwined with seasonal blooms and flowing fabric — the perfect frame for your vows.',
   },
   {
     id: 4,
     label: 'Bridal Stage',
     category: 'Stage Design',
-    img: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?w=1280&auto=format&fit=crop&q=60',
-    bg: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?w=1920&auto=format&fit=crop&q=60',
+    img: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?w=800&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1530103043960-ef38714abb15?w=1200&auto=format&fit=crop&q=40',
     desc: 'Grand bridal stages adorned with draping silks and curated floral walls — designed to make you the centerpiece of every gaze.',
   },
   {
     id: 5,
     label: 'Mandap Elegance',
     category: 'Traditional Decor',
-    img: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1280&auto=format&fit=crop&q=60',
-    bg: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1920&auto=format&fit=crop&q=60',
+    img: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=800&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?w=1200&auto=format&fit=crop&q=40',
     desc: 'Traditional mandap designs reimagined with contemporary elegance — honouring sacred rituals while creating a visually stunning ceremony.',
   },
   {
     id: 6,
     label: 'Candlelit Aisle',
     category: 'Ambient Lighting',
-    img: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1280&auto=format&fit=crop&q=60',
-    bg: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&auto=format&fit=crop&q=60',
+    img: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=800&auto=format&fit=crop&q=60',
+    bg: 'https://images.unsplash.com/photo-1519741497674-611481863552?w=1200&auto=format&fit=crop&q=40',
     desc: 'Hundreds of candles casting a warm golden glow — a romantic aisle that feels like a dream and photographs like a painting.',
   },
 ];
@@ -120,6 +120,15 @@ const SectionHeading = ({ eyebrow, title, subtitle }) => {
 const Gallery = () => {
   const [selected, setSelected] = useState(null);
   const [radius, setRadius] = useState(window.innerWidth < 768 ? 300 : 500);
+  const sectionRef = useRef(null);
+
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end']
+  });
+
+  // Complete one full rotation (360 degrees) through the gallery section
+  const rotation = useTransform(scrollYProgress, [0, 1], [0, 360]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -223,7 +232,8 @@ const Gallery = () => {
 
       <section
         id="gallery"
-        className="relative w-full overflow-visible h-[250vh]"
+        ref={sectionRef}
+        className="relative w-full overflow-visible h-[300vh] sm:h-[250vh]"
         style={{
           background: 'linear-gradient(180deg, #fffbf5 0%, #fef3c7 60%, #fde68a 100%)',
         }}
@@ -251,12 +261,13 @@ const Gallery = () => {
           </div>
 
           <div className="w-full h-full pt-10 sm:pt-20 relative z-0">
-            <CircularGallery
-              items={circularGalleryData}
-              radius={radius}
-              autoRotateSpeed={0.03}
-              onItemClick={(item) => setSelected(item.raw)}
-            />
+              <CircularGallery
+                items={circularGalleryData}
+                radius={radius}
+                autoRotateSpeed={0}
+                rotation={rotation}
+                onItemClick={(item) => setSelected(item.raw)}
+              />
           </div>
         </div>
       </section>

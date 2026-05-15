@@ -15,7 +15,7 @@ const TESTIMONIALS = [
     description:
       'Nirmal Decor transformed our wedding into a literal fairytale. Every detail was perfect. The elegance and professionalism displayed was unmatched.',
     avatarUrl:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=60',
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=60',
   },
   {
     id: 'testimonial-1',
@@ -25,7 +25,7 @@ const TESTIMONIALS = [
     description:
       'The attention to detail in their floral work is exceptional. Our guests were in awe of the ceremony arch and the ambient lighting.',
     avatarUrl:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=60',
+      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=60',
   },
   {
     id: 'testimonial-2',
@@ -35,7 +35,7 @@ const TESTIMONIALS = [
     description:
       'Working with Nirmal Decor was a game-changer for our project. Their expertise and professionalism exceeded our expectations.',
     avatarUrl:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=60',
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=60',
   },
   {
     id: 'testimonial-4',
@@ -45,7 +45,7 @@ const TESTIMONIALS = [
     description:
       'The quality of work and communication throughout the project was outstanding. They delivered exactly what we needed for our Mandap.',
     avatarUrl:
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=60',
+      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=60',
   },
 ];
 
@@ -197,7 +197,7 @@ export const Reviews = () => {
       id="reviews"
       className="relative min-h-[100dvh] flex flex-col items-center justify-center pt-24 pb-20 md:pt-32 md:pb-24 bg-cover bg-center bg-no-repeat bg-fixed"
       style={{
-        backgroundImage: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.65)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1920&auto=format&fit=crop&q=60")',
+        backgroundImage: 'linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.65)), url("https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=1200&auto=format&fit=crop&q=40")',
       }}
     >
       {/* Animated gold gradient overlay */}
